@@ -5,7 +5,7 @@
 // ---- CONFIGURATION ----
 // Paste the "Web app URL" you get after deploying the Google Apps Script
 // (see /apps-script/README.md) here:
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyioRmNgQnqQkIBT19xByvmANUrc5qrsKwd6v013vrcVBL_gHqJ1XwzUIyd0lmtpOFZ/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVPC5f67KNtX1UYae5U9FcjiWWu4paG0BJXv_9DqeMJEdycpcClLcKYmnn-suSr4Er/exec";
 
 // Require BOTH the minimum dwell time AND (if the section has videos) that
 // every video has been watched to completion, before unlocking the next tab.
