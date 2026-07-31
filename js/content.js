@@ -150,24 +150,22 @@ const TRAINING_SECTIONS = [
       </div>
     </div>
 
-    <h3>Illegal Choreo vs. Illegal Execution (cont.)</h3>
     <div class="card tinted">
-      <p><strong>Always ask:</strong> was the illegality intended &amp; choreographed that way?
-      Is it the whole team, or just one athlete?</p>
       <p>This training video discusses examples on the difference between illegal choreography
       and illegal execution.</p>
       <ul>
         <li><strong style="color:var(--red);">Illegal skills → Illegal choreography</strong></li>
         <li><strong style="color:#7A1FA2;">Performance errors → Illegal execution</strong></li>
       </ul>
-    </div>
-    <div class="video-grid" style="max-width:420px;justify-content:center;margin:0 auto;">
-      <div class="video-card">
-        <div class="video-wrap"><video controls preload="metadata" poster="posters/illegal_skills_vs_performance_errors.jpg" data-video-id="v22"><source src="videos/illegal_skills_vs_performance_errors.mp4" type="video/mp4"></video></div>
-        <div class="video-label">Illegal Skills vs. Performance Errors <span class="watch-check" data-watch-for="v22"><span class="dot"></span>Not watched</span></div>
-      </div>
+      <div class="video-grid" style="max-width:420px;justify-content:center;margin:0 auto;">
+        <div class="video-card">
+          <div class="video-wrap"><video controls preload="metadata" poster="posters/illegal_skills_vs_performance_errors.jpg" data-video-id="v22"><source src="videos/illegal_skills_vs_performance_errors.mp4" type="video/mp4"></video></div>
+          <div class="video-label">Illegal Skills vs. Performance Errors <span class="watch-check" data-watch-for="v22"><span class="dot"></span>Not watched</span></div>
+        </div>
+      </div>   
     </div>
 
+<br>
     <h3>Anticipating Potential Legalities</h3>
     <div class="card tinted">
       <p><strong>Always count athletes</strong> to quickly map out what skills are legal versus
@@ -176,15 +174,16 @@ const TRAINING_SECTIONS = [
       determine whether the upcoming skill is legal.</p>
       <p style="text-align:center;"><strong style="color:var(--red);">How many athletes do they
       need to legally perform that skill?</strong></p>
-    </div>
     <div class="video-grid" style="max-width:420px;justify-content:center;margin:0 auto;">
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/anticipating_numbers_braced_flips.jpg" data-video-id="v23"><source src="videos/anticipating_numbers_braced_flips.mp4" type="video/mp4"></video></div>
         <div class="video-label">Examples of Anticipating Numbers: Braced Flips <span class="watch-check" data-watch-for="v23"><span class="dot"></span>Not watched</span></div>
       </div>
     </div>
+      </div>
   `
 },
+
 
 // ---------------- 4. RULES COURSE INTRO ----------------
 {
