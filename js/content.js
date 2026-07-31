@@ -124,7 +124,7 @@ const TRAINING_SECTIONS = [
   id: "illegal-choreo-execution",
   navLabel: "Illegal Choreo vs. Execution",
   kicker: "Section 2",
-  title: "Illegal Choreo vs. Illegal Execution",
+  title: "Illegal Choreo, Execution & Anticipating Legalities",
   subtitle: "Always ask: was the illegality intended &amp; choreographed that way? Is it the whole team, or just one athlete?",
   minSeconds: 90,
   bodyHTML: `
