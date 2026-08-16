@@ -624,8 +624,10 @@ const QUIZ_DATA = [
   {
     "qNum": 1,
     "type": "single",
-    "videoType": "none",
-    "videoRef": null,
+    "media": {
+      "type": "none",
+      "ref": null
+    },
     "question": "When dismounting to new catchers, which of the following must be true?",
     "choices": [
       "The new catchers must be in place when the release is initiated.",
@@ -637,15 +639,20 @@ const QUIZ_DATA = [
     "correct": [
       4
     ],
+    "timeLimit": 30,
     "explanation": "Rule 2.7.8 requires all of the requirements to be met when dismounting to catchers who are not the original bases. Additionally, the new catchers must remain close to the original bases and the top person must be cradled by two cacthers + a head/shoulder spotter.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 2,
     "type": "single",
-    "videoType": "none",
-    "videoRef": null,
+    "media": {
+      "type": "none",
+      "ref": null
+    },
     "question": "Which of the following releases is NOT legal for a non-braced top person?",
     "choices": [
       "An extended lib releasing with a full twist to an extended heel stretch.",
@@ -656,15 +663,20 @@ const QUIZ_DATA = [
     "correct": [
       3
     ],
+    "timeLimit": 30,
     "explanation": "Rule 2.5.6 only allows up to 1 full twist when releasing from extended to extended.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 3,
     "type": "single",
-    "videoType": "youtube",
-    "videoRef": "PTJNMnJX0Y4",
+    "media": {
+      "type": "video",
+      "ref": "q3"
+    },
     "question": "Is this skill legal?",
     "choices": [
       "Legal",
@@ -673,15 +685,20 @@ const QUIZ_DATA = [
     "correct": [
       0
     ],
+    "timeLimit": 30,
     "explanation": "Legal [Rule 2.2.1c] – Since the spotter is not required for this skill, handing this person a sign simply makes this a double based prep without a spotter, which is legal.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 4,
     "type": "single",
-    "videoType": "none",
-    "videoRef": null,
+    "media": {
+      "type": "none",
+      "ref": null
+    },
     "question": "In a braced flip, under which of the following conditions may a bracer release the top person or move to a loading position?",
     "choices": [
       "The top person begins to descend and lands in a cradle.",
@@ -694,15 +711,20 @@ const QUIZ_DATA = [
     "correct": [
       5
     ],
+    "timeLimit": 30,
     "explanation": "Rule 2.3.5d allows all of these scenarios to occur while the bracer releases the top person or moves to a load position",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 5,
     "type": "single",
-    "videoType": "none",
-    "videoRef": null,
+    "media": {
+      "type": "none",
+      "ref": null
+    },
     "question": "Which of these tumbling skills with props are legal?",
     "choices": [
       "A forward roll while holding a cloth sign.",
@@ -714,15 +736,20 @@ const QUIZ_DATA = [
     "correct": [
       3
     ],
+    "timeLimit": 30,
     "explanation": "Rule 2.2.2b allows an athlete to hold soft props during tumbling skills in which hand(s) are not being used for support.",
-    "explanationVideoType": "gdrive",
-    "explanationVideoRef": "1jOAQLmO1SWoGurl3n5HS94zsTwBzn_q2"
+    "explanationMedia": {
+      "type": "image",
+      "ref": "q5_answer"
+    }
   },
   {
     "qNum": 6,
     "type": "single",
-    "videoType": "youtube",
-    "videoRef": "-647iHgB8vc",
+    "media": {
+      "type": "video",
+      "ref": "q6"
+    },
     "question": "Is this skill legal?",
     "choices": [
       "Legal",
@@ -731,15 +758,20 @@ const QUIZ_DATA = [
     "correct": [
       1
     ],
+    "timeLimit": 30,
     "explanation": "NOT Legal [Rule 2.2.1c] - Since this is a required spotter, they cannot take the sign. The top would need to pop down with the sign or hand it to someone else on the ground.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 7,
     "type": "single",
-    "videoType": "none",
-    "videoRef": null,
+    "media": {
+      "type": "none",
+      "ref": null
+    },
     "question": "In a braced flip where the only connection is hand-to-foot, which of the following must be true?",
     "choices": [
       "The top person cannot perform any twists.",
@@ -750,15 +782,20 @@ const QUIZ_DATA = [
     "correct": [
       3
     ],
+    "timeLimit": 30,
     "explanation": "New rule 2.3.5k requires all of the conditions be met for hand-to-foot only connections in a braced flip.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 8,
     "type": "single",
-    "videoType": "youtube",
-    "videoRef": "IV23uH1qBY4",
+    "media": {
+      "type": "video",
+      "ref": "q8"
+    },
     "question": "How many different legality deductions do you see in this video?",
     "choices": [
       "0",
@@ -769,15 +806,20 @@ const QUIZ_DATA = [
     "correct": [
       1
     ],
+    "timeLimit": 45,
     "explanation": "1 Legality Deduction - the far left group performs a prep level release to prone with a 1/2 twist that goes significantly higher than the point of contact with the bases on the catch which is illegal per Rule 2.5.6e2.",
-    "explanationVideoType": "gdrive",
-    "explanationVideoRef": "1skUAOWpYaENGMgZv0bJdEsYSdXiHRknk"
+    "explanationMedia": {
+      "type": "image",
+      "ref": "q8_answer"
+    }
   },
   {
     "qNum": 9,
     "type": "single",
-    "videoType": "none",
-    "videoRef": null,
+    "media": {
+      "type": "none",
+      "ref": null
+    },
     "question": "Which of the following is a top person NOT allowed to perform in a braced flip with hand-to-hand/arm connection?",
     "choices": [
       "A 1/4 twist",
@@ -790,15 +832,20 @@ const QUIZ_DATA = [
     "correct": [
       4
     ],
+    "timeLimit": 30,
     "explanation": "Under Rule 2.3.5h, in braced flips, the top person may not perform more than one and a quarter (1 1/4) flipping rotations and no more than one complete twist.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 10,
     "type": "single",
-    "videoType": "none",
-    "videoRef": null,
+    "media": {
+      "type": "none",
+      "ref": null
+    },
     "question": "Which of the following skills meets the NFHS definition for tumbling?",
     "choices": [
       "A cartwheel on the performing surface",
@@ -809,15 +856,20 @@ const QUIZ_DATA = [
     "correct": [
       0
     ],
+    "timeLimit": 30,
     "explanation": "Tumbling definition: Any hip-over-head skill that is not supported by a base that begins and ends on the performing surface.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 11,
     "type": "single",
-    "videoType": "gdrive",
-    "videoRef": "12QhuXANTaGTdgUn4edIaWAm2cxTec-S4",
+    "media": {
+      "type": "image",
+      "ref": "q11"
+    },
     "question": "Which of these is an example of a legal stunt?",
     "choices": [
       "A",
@@ -828,15 +880,20 @@ const QUIZ_DATA = [
     "correct": [
       2
     ],
+    "timeLimit": 30,
     "explanation": "(A) is double-base stunt/lift with no spotter required. The spotter in (B) is visually focused and in the proper position with the appropriate body position to help minimize risk to the top person. Both stunts are legal per Rule 2.2.5.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 12,
     "type": "single",
-    "videoType": "youtube",
-    "videoRef": "8fGEMFRLlOY",
+    "media": {
+      "type": "video",
+      "ref": "q12"
+    },
     "question": "Which of the following is required to make this skill legal?",
     "choices": [
       "The release must be caught at extended.",
@@ -847,15 +904,20 @@ const QUIZ_DATA = [
     "correct": [
       3
     ],
+    "timeLimit": 30,
     "explanation": "Rule 2.3.9 states that the top person in a partner stunt, pyramid or transition may not leave the floor unassisted with the intent to land or be caught in an inverted body position.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 13,
     "type": "single",
-    "videoType": "youtube",
-    "videoRef": "VZowKMS2wdE",
+    "media": {
+      "type": "video",
+      "ref": "q13"
+    },
     "question": "How many different legality deductions do you see in this video?",
     "choices": [
       "0",
@@ -866,15 +928,20 @@ const QUIZ_DATA = [
     "correct": [
       2
     ],
+    "timeLimit": 45,
     "explanation": "",
-    "explanationVideoType": "youtube",
-    "explanationVideoRef": "fZX1diFCiVw"
+    "explanationMedia": {
+      "type": "video",
+      "ref": "q13_answer"
+    }
   },
   {
     "qNum": 14,
     "type": "single",
-    "videoType": "youtube",
-    "videoRef": "UgeI96x5gZk",
+    "media": {
+      "type": "video",
+      "ref": "q14"
+    },
     "question": "Is this skill legal?",
     "choices": [
       "Legal",
@@ -883,15 +950,20 @@ const QUIZ_DATA = [
     "correct": [
       1
     ],
+    "timeLimit": 30,
     "explanation": "While there is no longer a requirement for upper body contact during an inversion, Rule 2.3.6c states that the top person cannot be released and land in an inverted position. This skill either needs to be caught non-inverted or maintain contact with a base/spotter throughout to be legal.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 15,
     "type": "single",
-    "videoType": "youtube",
-    "videoRef": "x2trw0qFNnA",
+    "media": {
+      "type": "video",
+      "ref": "q15"
+    },
     "question": "Is this skill legal?",
     "choices": [
       "Legal",
@@ -900,15 +972,20 @@ const QUIZ_DATA = [
     "correct": [
       0
     ],
+    "timeLimit": 30,
     "explanation": "Legal [Rule 2.3.4] - While this may look like a braced flip, which would also be legal with this setup, it is technically a braced roll. That is because a base or spotter (in this case, a base) has a hand on the shoulder of the top person. With this setup, the top person is not released from the people on the ground until their hips are above their head, making it an inversion that releases. If there were no one in contact with the shoulder, then the release would happen prior to the hips being over the head, making it a flip.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 16,
     "type": "single",
-    "videoType": "youtube",
-    "videoRef": "7nPPRCqJN1U",
+    "media": {
+      "type": "video",
+      "ref": "q16"
+    },
     "question": "What NFHS rule should be cited for this legality?",
     "choices": [
       "2.3.6c2 - Inversions",
@@ -919,15 +996,20 @@ const QUIZ_DATA = [
     "correct": [
       0
     ],
+    "timeLimit": 30,
     "explanation": "NOT Legal [Rule 2.3.6c2] - Foldover stunts must initiate from prep level or below. It can drive through an extended position, but it cannot stop or pause in the extended position. The forward foldover should be a continuous movement through the drive upward.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 17,
     "type": "single",
-    "videoType": "none",
-    "videoRef": null,
+    "media": {
+      "type": "none",
+      "ref": null
+    },
     "question": "In a non-flipping braced release pyramid where the only connection between the bracer and the top person is hand-to-foot, which of the following is required?",
     "choices": [
       "The top person must be caught by original bases.",
@@ -939,15 +1021,20 @@ const QUIZ_DATA = [
     "correct": [
       2
     ],
+    "timeLimit": 30,
     "explanation": "Rule 2.5.5 does not require braced releases transitions to be caught by original bases or be caught in a cradle. However, 2.5.5b specifies that bracers must be at prep level or below (i.e. extended stunts cannot serve as bracers for release transitions).",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 18,
     "type": "single",
-    "videoType": "youtube",
-    "videoRef": "5a-dZp9G1h4",
+    "media": {
+      "type": "video",
+      "ref": "q18"
+    },
     "question": "Is this skill legal? If not, what type of VHSL legality deduction should be issued?",
     "choices": [
       "Yes, this skill is legal.",
@@ -957,15 +1044,20 @@ const QUIZ_DATA = [
     "correct": [
       1
     ],
+    "timeLimit": 30,
     "explanation": "NOT Legal [Rule 2.2.10] - The athletes seat rolling under the lifts violate Rule 2.2.10 which states athletes must not move under stunts unless they are involved in building/stabilizing/dismounting the stunt.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 19,
     "type": "single",
-    "videoType": "gdrive",
-    "videoRef": "1gNBgIIvBtvlAxLofH3LUWHBgME2aZwJO",
+    "media": {
+      "type": "image",
+      "ref": "q19"
+    },
     "question": "Which of these is an example of a nugget by NFHS definition?",
     "choices": [
       "A",
@@ -976,15 +1068,20 @@ const QUIZ_DATA = [
     "correct": [
       3
     ],
+    "timeLimit": 30,
     "explanation": "Nugget definition: A tucked position, bent at the hips and knees with the torso and head drawn toward the knees. The emphasis is that the head needs to be DOWN.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   },
   {
     "qNum": 20,
     "type": "single",
-    "videoType": "none",
-    "videoRef": null,
+    "media": {
+      "type": "none",
+      "ref": null
+    },
     "question": "If a top person performs a front walkover into a non-inverted load position of a stunt, which of the following may they hold in their hands during the transition?",
     "choices": [
       "A sign",
@@ -995,9 +1092,12 @@ const QUIZ_DATA = [
     "correct": [
       2
     ],
+    "timeLimit": 30,
     "explanation": "Rule 2.3.7 prohibits inverted top person's from holding objects in their hands with the exception of moving from inverted on the floor to non-inverted in a stunt, during a forward roll dismount from a prone position below prep, a partner cartwheel, or an assisted walkover.The sign and poms are both allowed because the top person is moving into a non-inverted stunt.",
-    "explanationVideoType": "none",
-    "explanationVideoRef": null
+    "explanationMedia": {
+      "type": "none",
+      "ref": null
+    }
   }
 ];
 
@@ -1006,7 +1106,7 @@ const SECTION_8 = {
   navLabel: "Knowledge Check",
   kicker: "Section 6",
   title: "🏆 Knowledge Check Challenge",
-  subtitle: "20 questions, one at a time — score 85% or higher to pass. Jump around and change your mind as much as you want before you submit.",
+  subtitle: "Choose Beginner or Advanced mode below — score 85% or higher to pass.",
   minSeconds: 60,
   videos: [],
   isQuiz: true,
