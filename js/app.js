@@ -277,7 +277,7 @@ function buildQuiz(section) {
   function renderVideoEmbed(type, ref, label) {
     if (!type || type === "none" || !ref) return "";
     if (type === "youtube") {
-      return `<div class="quiz-video-wrap"><iframe src="https://www.youtube.com/embed/${ref}" title="${label}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+      return `<div class="quiz-video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/${ref}" title="${label}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
     }
     if (type === "gdrive") {
       return `<div class="quiz-video-wrap"><iframe src="https://drive.google.com/file/d/${ref}/preview" title="${label}" loading="lazy" allow="autoplay"></iframe></div>`;
