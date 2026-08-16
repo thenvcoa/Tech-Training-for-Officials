@@ -1,841 +1,449 @@
-/* ==========================================================
-   VHSL Cheer Tech Officials Training — app logic
-   ========================================================== */
+/* ============================================================
+   VHSL Cheer Tech Officials Training — stylesheet
+   Palette (matches the companion PPTX deck):
+     --navy   #0E2445  primary / headers / dark panels
+     --blue   #1B4B91  links, active states
+     --gold   #C98A1E  accent, progress, badges
+     --green  #1E7B45  "legal" / success
+     --red    #B42A22  "illegal" / warnings
+     --bg     #F3F6FA  card background
+   Display face: Poppins (bold, athletic, confident)
+   Body face: Inter (clean, highly legible on mobile)
+   ============================================================ */
 
-// ---- CONFIGURATION ----
-// Paste the "Web app URL" you get after deploying the Google Apps Script
-// (see /apps-script/README.md) here:
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVPC5f67KNtX1UYae5U9FcjiWWu4paG0BJXv_9DqeMJEdycpcClLcKYmnn-suSr4Er/exec";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-// Require BOTH the minimum dwell time AND (if the section has videos) that
-// every video has been watched to completion, before unlocking the next tab.
-// Set to false if you'd rather require only ONE of the two conditions.
-const REQUIRE_BOTH_TIME_AND_VIDEOS = true;
-
-// Minimum percentage of questions an official must get right on the
-// knowledge check to pass and unlock the verification page.
-const QUIZ_PASS_PERCENT = 85;
-
-const STORAGE_KEY = "vhsl_cheer_training_progress_v1";
-
-let state = {
-  currentIndex: 0,
-  sectionProgress: {}, // id -> { enteredAt, elapsedBeforePause, videosWatched: {videoId:true}, unlocked, quizAnswers, quizSubmitted }
-};
-
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const saved = JSON.parse(raw);
-      state.sectionProgress = saved.sectionProgress || {};
-      state.currentIndex = 0; // always resume review from first incomplete section on reload
-    }
-  } catch (e) { /* ignore */ }
+:root{
+  --navy:#0E2445;
+  --navy-2:#16335C;
+  --blue:#1B4B91;
+  --gold:#C98A1E;
+  --gold-light:#F2B705;
+  --green:#1E7B45;
+  --green-bg:#EAF5EE;
+  --red:#B42A22;
+  --red-bg:#FBEEEC;
+  --bg:#F3F6FA;
+  --line:#DDE3EC;
+  --text:#2B2F38;
+  --text-soft:#5B6270;
+  --white:#FFFFFF;
+  --radius:16px;
+  --shadow:0 6px 20px rgba(14,36,69,.08);
+  --track-h:6px;
 }
 
-function saveState() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ sectionProgress: state.sectionProgress }));
-  } catch (e) { /* ignore */ }
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.display{
+  font-family:'Poppins',system-ui,sans-serif;
+  color:var(--navy);
+  margin:0 0 .4em;
+  line-height:1.15;
+}
+a{color:var(--blue);}
+img{max-width:100%;display:block;}
+button{font-family:inherit;}
+
+/* ---------- Top bar (mobile) ---------- */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  background:var(--navy);
+  color:var(--white);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.7rem 1rem;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.topbar .brand{
+  font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.topbar .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--gold);}
+.hamburger{
+  display:none;
+  background:none;border:none;color:var(--white);font-size:1.4rem;cursor:pointer;
+  padding:.25rem .5rem;
 }
 
-function getProgress(sectionId) {
-  if (!state.sectionProgress[sectionId]) {
-    state.sectionProgress[sectionId] = {
-      elapsedSeconds: 0,
-      videosWatched: {},
-      unlocked: false,
-      timerStart: null,
-      quizAnswers: {},
-      quizSubmitted: false,
-      quizPassed: false,
-      quizResult: {},
-      explanationsReviewed: false,
-      currentQuestionIndex: 0,
-      quizMode: null,
-      quizAttempts: 0,
-      videoConsumed: {}
-    };
+/* ---------- Layout ---------- */
+.app{
+  display:grid;
+  grid-template-columns:300px 1fr;
+  min-height:100vh;
+}
+.sidebar{
+  background:var(--navy);
+  color:var(--white);
+  padding:1.5rem 1.1rem;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.sidebar .brand{
+  font-family:'Poppins',sans-serif;font-weight:800;font-size:1.15rem;
+  margin-bottom:.15rem;
+}
+.sidebar .brand-sub{
+  color:#B9C5DA;font-size:.8rem;margin-bottom:1.4rem;
+}
+.overall-progress{
+  margin-bottom:1.5rem;
+}
+.overall-progress .label{font-size:.72rem;letter-spacing:.06em;color:#B9C5DA;margin-bottom:.4rem;text-transform:uppercase;}
+.track{
+  height:var(--track-h);background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden;
+}
+.track > span{
+  display:block;height:100%;background:linear-gradient(90deg,var(--gold-light),var(--gold));
+  border-radius:99px;transition:width .4s ease;
+}
+
+.navlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.25rem;}
+.navlist li{position:relative;}
+.navlink{
+  display:flex;align-items:center;gap:.65rem;
+  width:100%;text-align:left;
+  background:none;border:none;color:#CBD6E8;
+  padding:.65rem .6rem;border-radius:10px;
+  font-size:.88rem;font-weight:500;cursor:pointer;
+  transition:background .15s ease,color .15s ease;
+}
+.navlink .step-badge{
+  width:24px;height:24px;flex:0 0 24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:700;
+  background:rgba(255,255,255,.12);color:#CBD6E8;
+}
+.navlink.active{background:rgba(255,255,255,.08);color:var(--white);}
+.navlink.active .step-badge{background:var(--blue);color:var(--white);}
+.navlink.complete .step-badge{background:var(--green);color:var(--white);}
+.navlink.locked{opacity:.5;cursor:not-allowed;}
+.navlink .lock-icon{margin-left:auto;font-size:.85rem;opacity:.7;}
+.navlink:not(.locked):hover{background:rgba(255,255,255,.06);}
+
+.main{padding:2.2rem 3rem 4rem;max-width:980px;}
+.section{display:none;}
+.section.active{display:block;animation:fadeIn .35s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+.kicker{
+  display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.06em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:.5rem;
+}
+.section h2.display{font-size:2rem;font-weight:700;}
+.section .subtitle{color:var(--text-soft);font-style:italic;margin-bottom:1.6rem;font-size:1.02rem;}
+
+.card{
+  background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:1.4rem 1.6rem;margin-bottom:1.3rem;
+}
+.card.tinted{background:var(--bg);box-shadow:none;border:1px solid var(--line);}
+.card h3{font-size:1.15rem;margin-bottom:.5rem;}
+.card h4{font-size:1rem;color:var(--navy-2);margin-bottom:.4rem;}
+.card p{line-height:1.55;color:var(--text);margin:.3rem 0;}
+.card ul{margin:.4rem 0;padding-left:1.3rem;line-height:1.6;}
+.card li{margin-bottom:.45rem;}
+.card ol{margin:.4rem 0;padding-left:1.3rem;line-height:1.6;}
+.card ol li{margin-bottom:.45rem;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+@media (max-width:720px){.two-col{grid-template-columns:1fr;}}
+
+.pill{
+  display:inline-block;padding:.3rem .8rem;border-radius:99px;
+  font-size:.72rem;font-weight:700;letter-spacing:.03em;color:var(--white);
+  margin-bottom:.6rem;
+}
+.pill.legal{background:var(--green);}
+.pill.illegal{background:var(--red);}
+.pill.info{background:var(--blue);}
+.pill.gold{background:var(--gold);color:var(--navy);}
+
+.rule-tag{
+  font-family:'Poppins',sans-serif;font-weight:700;color:var(--blue);font-size:.85rem;
+}
+
+figure.frame{margin:0 auto 1rem;text-align:center;}
+figure.frame img{border-radius:12px;box-shadow:var(--shadow);margin:0 auto;}
+figure.frame figcaption{font-size:.82rem;color:var(--text-soft);margin-top:.4rem;text-align:center;}
+
+.img-row{display:flex;gap:.9rem;flex-wrap:wrap;margin:0 auto 1rem;justify-content:center;}
+.img-row img{border-radius:10px;box-shadow:var(--shadow);flex:1 1 140px;max-width:220px;}
+
+/* ---------- Video ---------- */
+.video-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:0 auto 1.2rem;justify-content:center;}
+@media (max-width:720px){.video-grid{grid-template-columns:1fr;}}
+.video-card{background:var(--white);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;}
+.video-card .video-wrap{position:relative;background:#000;}
+.video-card video{width:100%;display:block;max-height:360px;background:#000;}
+.video-card .video-label{
+  padding:.6rem .8rem;font-size:.85rem;font-weight:600;color:var(--navy);
+  display:flex;align-items:center;justify-content:space-between;gap:.5rem;
+}
+.watch-check{font-size:.78rem;font-weight:700;color:var(--text-soft);display:flex;align-items:center;gap:.3rem;}
+.watch-check.done{color:var(--green);}
+.watch-check .dot{width:8px;height:8px;border-radius:50%;background:var(--line);}
+.watch-check.done .dot{background:var(--green);}
+
+/* ---------- Gating banner ---------- */
+.gate-banner{
+  position:sticky;bottom:0;margin-top:2rem;
+  background:var(--navy);color:var(--white);
+  border-radius:14px;padding:1rem 1.3rem;
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  box-shadow:0 -6px 24px rgba(0,0,0,.12);
+}
+.gate-banner .req{
+  font-size:.82rem;color:#CBD6E8;display:flex;align-items:center;gap:.4rem;
+}
+.gate-banner .req.done{color:#8FE3B0;}
+.gate-banner .req .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.3);}
+.gate-banner .req.done .dot{background:#3FCB78;}
+.gate-spacer{flex:1;}
+.btn{
+  border:none;border-radius:10px;padding:.75rem 1.4rem;font-weight:700;font-size:.92rem;
+  cursor:pointer;transition:transform .12s ease, opacity .12s ease;
+}
+.btn:active{transform:scale(.97);}
+.btn-primary{background:var(--gold-light);color:var(--navy);}
+.btn-primary:disabled{background:rgba(255,255,255,.15);color:rgba(255,255,255,.4);cursor:not-allowed;}
+.btn-secondary{background:rgba(255,255,255,.12);color:var(--white);}
+.btn-secondary:hover{background:rgba(255,255,255,.2);}
+
+/* ---------- Quiz (trivia game style) ---------- */
+.quiz-game-wrap{max-width:640px;margin:0 auto;}
+
+.quiz-progress-dots{
+  display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-bottom:1.2rem;
+}
+.quiz-dot{
+  width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:var(--white);
+  color:var(--text-soft);font-size:.78rem;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:transform .1s ease;
+}
+.quiz-dot:hover{transform:scale(1.1);}
+.quiz-dot.answered{background:var(--bg);border-color:var(--blue);color:var(--blue);}
+.quiz-dot.current{border-color:var(--gold);border-width:2.5px;box-shadow:0 0 0 3px rgba(201,138,30,.2);}
+.quiz-dot.correct{background:var(--green);border-color:var(--green);color:#fff;}
+.quiz-dot.incorrect{background:var(--red);border-color:var(--red);color:#fff;}
+
+.quiz-game-card{
+  background:linear-gradient(180deg,var(--white) 0%,var(--bg) 100%);
+  border:2px solid var(--navy);border-radius:20px;
+  box-shadow:0 10px 28px rgba(14,36,69,.16);
+  padding:1.6rem 1.6rem 1.8rem;margin-bottom:1.1rem;position:relative;overflow:hidden;
+}
+.quiz-game-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:6px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));
+}
+.quiz-game-kicker{
+  display:inline-block;font-family:'Poppins',sans-serif;font-weight:800;font-size:.78rem;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--gold);
+  background:var(--navy);padding:.35rem .8rem;border-radius:99px;margin-bottom:1rem;
+}
+.quiz-question-text{
+  font-family:'Poppins',sans-serif;font-weight:700;font-size:1.2rem;color:var(--navy);
+  line-height:1.35;margin:0 0 1.2rem;
+}
+.quiz-choices{display:flex;flex-direction:column;gap:.65rem;}
+.quiz-choice{
+  display:flex;align-items:center;gap:.8rem;width:100%;text-align:left;
+  background:var(--white);border:2px solid var(--line);border-radius:12px;padding:.75rem .9rem;
+  cursor:pointer;font-size:.96rem;color:var(--text);font-family:inherit;
+  transition:border-color .15s ease,background .15s ease,transform .08s ease;
+}
+.quiz-choice:hover{border-color:var(--blue);transform:translateX(2px);}
+.quiz-choice.selected{border-color:var(--blue);background:#EEF3FB;}
+.quiz-choice.correct{border-color:var(--green);background:var(--green-bg);}
+.quiz-choice.incorrect{border-color:var(--red);background:var(--red-bg);}
+.quiz-choice-letter{
+  flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;
+  font-family:'Poppins',sans-serif;
+}
+.quiz-choice.correct .quiz-choice-letter{background:var(--green);}
+.quiz-choice.incorrect .quiz-choice-letter{background:var(--red);}
+.quiz-choice-text{flex:1;line-height:1.4;}
+.quiz-choice.review{cursor:default;}
+.quiz-choice.review:hover{transform:none;}
+
+.quiz-media-wrap{
+  position:relative;width:100%;padding-top:56.25%;border-radius:12px;overflow:hidden;
+  background:#000;margin-bottom:1.1rem;box-shadow:var(--shadow);
+}
+.quiz-media-wrap iframe,.quiz-media-wrap video{
+  position:absolute;top:0;left:0;width:100%;height:100%;border:none;display:block;
+}
+.quiz-media-wrap.image{
+  position:static;padding-top:0;background:none;box-shadow:none;text-align:center;
+}
+.quiz-media-wrap.image img{
+  max-width:100%;border-radius:12px;box-shadow:var(--shadow);display:inline-block;
+}
+.quiz-media-wrap.video-once .quiz-play-once-btn{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  background:rgba(14,36,69,.55);color:#fff;border:none;cursor:pointer;
+  font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.02em;
+  transition:background .15s ease;
+}
+.quiz-media-wrap.video-once .quiz-play-once-btn:hover{background:rgba(14,36,69,.72);}
+.quiz-media-wrap.video-consumed{
+  position:static;padding-top:0;background:var(--bg);box-shadow:none;
+  border:1.5px dashed var(--line);border-radius:12px;padding:1.4rem 1rem;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+}
+.quiz-video-consumed-msg{color:var(--text-soft);font-size:.9rem;font-weight:600;}
+
+.quiz-mode-badge{
+  display:inline-block;font-family:'Poppins',sans-serif;font-weight:700;font-size:.82rem;
+  padding:.4rem .9rem;border-radius:99px;margin-bottom:1rem;
+}
+.quiz-mode-badge.beginner{background:var(--green-bg);color:var(--green);}
+.quiz-mode-badge.advanced{background:var(--red-bg);color:var(--red);}
+
+.quiz-timer-bar-wrap{
+  height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:.35rem;
+}
+.quiz-timer-bar{
+  height:100%;background:linear-gradient(90deg,var(--gold),var(--red));
+  border-radius:99px;transition:width 1s linear;
+}
+.quiz-timer-text{
+  text-align:center;font-size:.82rem;font-weight:700;color:var(--text-soft);margin:0 0 1rem;
+}
+
+.quiz-dot.locked{cursor:default;}
+.quiz-dot.locked:hover{transform:none;}
+
+.quiz-mode-select{
+  display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1rem;
+}
+@media (max-width:640px){.quiz-mode-select{grid-template-columns:1fr;}}
+.quiz-mode-card{
+  background:var(--white);border-radius:18px;padding:1.5rem 1.4rem;
+  border:2.5px solid var(--line);box-shadow:var(--shadow);display:flex;flex-direction:column;
+}
+.quiz-mode-card.beginner{border-color:var(--green);}
+.quiz-mode-card.advanced{border-color:var(--red);}
+.quiz-mode-card-title{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.25rem;color:var(--navy);margin-bottom:.2rem;}
+.quiz-mode-card-sub{font-size:.85rem;color:var(--text-soft);font-style:italic;margin-bottom:.9rem;}
+.quiz-mode-card ul{margin:0 0 1.2rem;padding-left:1.2rem;line-height:1.55;font-size:.9rem;flex:1;}
+.quiz-mode-card li{margin-bottom:.4rem;}
+.quiz-mode-card .btn{width:100%;}
+.quiz-mode-warning{
+  text-align:center;font-size:.85rem;color:var(--text-soft);font-weight:600;margin-top:.3rem;
+}
+.quiz-mode-confirm{
+  max-width:480px;margin:0 auto;text-align:center;background:var(--white);
+  border-radius:16px;box-shadow:var(--shadow);padding:1.8rem 1.6rem;
+}
+.quiz-mode-confirm p{font-size:1.02rem;margin-bottom:1.2rem;}
+
+.quiz-nav-bar{
+  display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:.4rem;
+}
+.quiz-nav-bar .btn-secondary{
+  background:var(--white);color:var(--navy);border:2px solid var(--line);
+}
+.quiz-nav-bar .btn-secondary:hover{background:var(--bg);border-color:var(--blue);}
+.quiz-nav-bar .btn-secondary:disabled{
+  background:var(--bg);color:var(--text-soft);border-color:var(--line);
+  opacity:.6;cursor:not-allowed;
+}
+.quiz-nav-bar .btn-primary:disabled{
+  background:var(--line);color:var(--text-soft);cursor:not-allowed;
+}
+.quiz-unanswered-note{
+  text-align:center;font-size:.82rem;color:var(--text-soft);margin-top:.6rem;
+}
+
+.quiz-summary{
+  border-radius:14px;padding:1.1rem 1.4rem;text-align:center;
+  font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;line-height:1.5;
+}
+.quiz-summary.pass{background:var(--green);color:#fff;}
+.quiz-summary.fail{background:var(--red);color:#fff;}
+
+.quiz-review-list{display:flex;flex-direction:column;gap:1.2rem;}
+.quiz-review-item{
+  background:var(--white);border-radius:16px;box-shadow:var(--shadow);
+  padding:1.4rem 1.5rem;
+}
+.quiz-explanation{
+  margin-top:1.1rem;padding-top:1rem;border-top:1px dashed var(--line);
+}
+.quiz-explanation h4{color:var(--navy);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;}
+.quiz-explanation p{line-height:1.55;color:var(--text);margin:0 0 .8rem;}
+
+@media (max-width:600px){
+  .quiz-game-card{padding:1.2rem 1.1rem 1.4rem;}
+  .quiz-question-text{font-size:1.08rem;}
+}
+
+/* ---------- Form ---------- */
+.form-grid{display:flex;flex-direction:column;gap:1rem;max-width:480px;}
+.form-field label{display:block;font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:.35rem;}
+.form-field input,.form-field select{
+  width:100%;padding:.7rem .8rem;border-radius:10px;border:1.5px solid var(--line);
+  font-size:.95rem;font-family:inherit;background:var(--white);
+}
+.form-field input:focus,.form-field select:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue);}
+.form-error{color:var(--red);font-size:.8rem;margin-top:.3rem;display:none;}
+.form-field.invalid input,.form-field.invalid select{border-color:var(--red);}
+.form-field.invalid .form-error{display:block;}
+
+.success-panel{
+  text-align:center;padding:3rem 1.5rem;
+}
+.success-panel .check-circle{
+  width:78px;height:78px;border-radius:50%;background:var(--green);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:2.4rem;margin:0 auto 1.2rem;
+}
+
+/* ---------- Footer / lock overlay ---------- */
+.locked-msg{
+  display:flex;align-items:center;gap:.6rem;background:var(--red-bg);color:var(--red);
+  border-radius:10px;padding:.7rem 1rem;font-size:.85rem;font-weight:600;margin-bottom:1rem;
+}
+
+/* ---------- Table (contacts) ---------- */
+table.contacts{width:100%;border-collapse:collapse;}
+table.contacts th{text-align:left;font-size:.75rem;color:var(--text-soft);text-transform:uppercase;letter-spacing:.04em;padding:.5rem .6rem;border-bottom:2px solid var(--line);}
+table.contacts td{padding:.7rem .6rem;border-bottom:1px solid var(--line);font-size:.92rem;}
+table.contacts tr:last-child td{border-bottom:none;}
+
+/* ---------- Responsive ---------- */
+@media (max-width:900px){
+  .app{grid-template-columns:1fr;}
+  .sidebar{
+    position:fixed;left:0;top:56px;bottom:0;width:280px;
+    transform:translateX(-100%);transition:transform .25s ease;z-index:35;
+    box-shadow:8px 0 24px rgba(0,0,0,.25);
   }
-  const p = state.sectionProgress[sectionId];
-  // Defensive defaults for progress saved by an earlier version of this quiz.
-  if (!p.quizResult) p.quizResult = {};
-  if (typeof p.explanationsReviewed !== "boolean") p.explanationsReviewed = false;
-  if (typeof p.currentQuestionIndex !== "number") p.currentQuestionIndex = 0;
-  if (typeof p.quizMode === "undefined") p.quizMode = null;
-  if (typeof p.quizAttempts !== "number") p.quizAttempts = 0;
-  if (!p.videoConsumed) p.videoConsumed = {};
-  return p;
-}
-
-function allVideoIdsForSection(section) {
-  const matches = [...section.bodyHTML.matchAll(/data-video-id="([^"]+)"/g)];
-  return [...new Set(matches.map(m => m[1]))];
-}
-
-function sectionMeetsRequirements(section) {
-  const p = getProgress(section.id);
-  const timeOk = p.elapsedSeconds >= (section.minSeconds || 0);
-  const videoIds = allVideoIdsForSection(section);
-  const videosOk = videoIds.length === 0 || videoIds.every(id => p.videosWatched[id]);
-  if (section.isQuiz) {
-    return p.quizPassed && p.explanationsReviewed;
+  .sidebar.open{transform:translateX(0);}
+  .hamburger{display:block;}
+  .main{padding:1.3rem 1.1rem 3rem;}
+  .sidebar-scrim{
+    display:none;position:fixed;inset:56px 0 0 0;background:rgba(0,0,0,.35);z-index:30;
   }
-  if (videoIds.length === 0) return timeOk;
-  return REQUIRE_BOTH_TIME_AND_VIDEOS ? (timeOk && videosOk) : (timeOk || videosOk);
+  .sidebar-scrim.show{display:block;}
+  .section h2.display{font-size:1.5rem;}
+  .gate-banner{position:sticky;bottom:0;flex-direction:column;align-items:stretch;}
+  .gate-banner .btn{width:100%;}
 }
 
-function isSectionUnlockedForNav(index) {
-  if (index === 0) return true;
-  // a section is reachable if every prior section's requirements are already met
-  for (let i = 0; i < index; i++) {
-    if (!sectionMeetsRequirements(TRAINING_SECTIONS[i])) return false;
-  }
-  return true;
+.visually-hidden{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0;
 }
-
-// ---------- Timer ----------
-let timerInterval = null;
-function startTimer(section) {
-  stopTimer();
-  const p = getProgress(section.id);
-  p.timerStart = Date.now();
-  timerInterval = setInterval(() => {
-    p.elapsedSeconds += 1;
-    updateGateBanner(section);
-    saveState();
-  }, 1000);
+:focus-visible{outline:3px solid var(--gold-light);outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
 }
-function stopTimer() {
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-}
-
-// ---------- Rendering ----------
-function renderSidebar() {
-  const list = document.getElementById("nav-list");
-  list.innerHTML = "";
-  TRAINING_SECTIONS.forEach((section, i) => {
-    const li = document.createElement("li");
-    const unlocked = isSectionUnlockedForNav(i);
-    const complete = sectionMeetsRequirements(section);
-    const btn = document.createElement("button");
-    btn.className = "navlink" + (i === state.currentIndex ? " active" : "") +
-                     (complete ? " complete" : "") + (!unlocked ? " locked" : "");
-    btn.setAttribute("aria-current", i === state.currentIndex ? "true" : "false");
-    btn.disabled = !unlocked;
-    btn.innerHTML = `<span class="step-badge">${complete ? "&#10003;" : (i+1)}</span>
-      <span>${section.navLabel}</span>
-      ${!unlocked ? '<span class="lock-icon">&#128274;</span>' : ""}`;
-    btn.addEventListener("click", () => { if (unlocked) goToSection(i); });
-    li.appendChild(btn);
-    list.appendChild(li);
-  });
-
-  const doneCount = TRAINING_SECTIONS.filter(s => sectionMeetsRequirements(s)).length;
-  const pct = Math.round((doneCount / TRAINING_SECTIONS.length) * 100);
-  document.getElementById("overall-track-fill").style.width = pct + "%";
-  document.getElementById("overall-track-label").textContent = `${pct}% complete`;
-}
-
-function renderSection(index) {
-  const section = TRAINING_SECTIONS[index];
-  const main = document.getElementById("main-content");
-
-  const prevLocked = !isSectionUnlockedForNav(index);
-  main.innerHTML = `
-    <section class="section active" id="section-${section.id}">
-      <span class="kicker">${section.kicker}</span>
-      <h2 class="display">${section.title}</h2>
-      ${section.subtitle ? `<p class="subtitle">${section.subtitle}</p>` : ""}
-      ${prevLocked ? `<div class="locked-msg">&#128274; Complete the previous section to unlock this one.</div>` : section.bodyHTML}
-      <div class="gate-banner" id="gate-banner"></div>
-    </section>
-  `;
-
-  if (prevLocked) return;
-
-  if (section.isQuiz) buildQuiz(section);
-  if (section.isForm) buildForm(section);
-
-  wireVideos(section);
-  startTimer(section);
-  updateGateBanner(section);
-}
-
-function updateGateBanner(section) {
-  const banner = document.getElementById("gate-banner");
-  if (!banner) return;
-  const p = getProgress(section.id);
-  const videoIds = allVideoIdsForSection(section);
-  const timeOk = p.elapsedSeconds >= (section.minSeconds || 0);
-  const videosOk = videoIds.length === 0 || videoIds.every(id => p.videosWatched[id]);
-  const met = sectionMeetsRequirements(section);
-  const idx = TRAINING_SECTIONS.findIndex(s => s.id === section.id);
-  const isLast = idx === TRAINING_SECTIONS.length - 1;
-
-  let reqsHTML = "";
-  if (section.isQuiz) {
-    if (!p.quizPassed) {
-      reqsHTML = `<span class="req"><span class="dot"></span>Score ${QUIZ_PASS_PERCENT}%+ to continue</span>`;
-    } else if (!p.explanationsReviewed) {
-      reqsHTML = `<span class="req"><span class="dot"></span>Scroll through every explanation below to continue</span>`;
-    } else {
-      reqsHTML = `<span class="req done"><span class="dot"></span>Knowledge check complete</span>`;
-    }
-  } else if (section.isForm) {
-    reqsHTML = `<span class="req done"><span class="dot"></span>Fill out the form below to finish</span>`;
-  } else {
-    const remaining = Math.max(0, (section.minSeconds||0) - p.elapsedSeconds);
-    reqsHTML = `<span class="req ${timeOk ? "done" : ""}"><span class="dot"></span>${timeOk ? "Time requirement met" : `On this page: ${remaining}s remaining`}</span>`;
-    if (videoIds.length > 0) {
-      const watchedCount = videoIds.filter(id => p.videosWatched[id]).length;
-      reqsHTML += `<span class="req ${videosOk ? "done" : ""}"><span class="dot"></span>${videosOk ? "All videos watched" : `Videos watched: ${watchedCount}/${videoIds.length}`}</span>`;
-    }
-  }
-
-  const metChanged = banner.getAttribute("data-met") !== String(met);
-  banner.setAttribute("data-met", String(met));
-
-  banner.innerHTML = `
-    ${reqsHTML}
-    <div class="gate-spacer"></div>
-    <button class="btn btn-secondary" id="btn-back" ${idx===0?"disabled":""}>&larr; Back</button>
-    <button class="btn btn-primary" id="btn-continue" ${(met && !isLast) ? "" : "disabled"}>
-      Continue &rarr;
-    </button>
-  `;
-  const backBtn = document.getElementById("btn-back");
-  if (backBtn) backBtn.addEventListener("click", () => goToSection(idx - 1));
-  const contBtn = document.getElementById("btn-continue");
-  if (contBtn) contBtn.addEventListener("click", () => goToSection(idx + 1));
-
-  // Only rebuild the sidebar nav when this section's completion state actually flips --
-  // not on every 1-second timer tick. Rebuilding every tick wastes work and risks yanking
-  // a nav button out from under a person mid-click.
-  if (metChanged) renderSidebar();
-}
-
-function goToSection(index) {
-  if (index < 0 || index >= TRAINING_SECTIONS.length) return;
-  if (!isSectionUnlockedForNav(index)) return;
-  stopTimer();
-  state.currentIndex = index;
-  renderSection(index);
-  renderSidebar();
-  document.getElementById("main-content").scrollTo?.(0,0);
-  window.scrollTo(0,0);
-  closeSidebarMobile();
-}
-
-function wireVideos(section) {
-  const videos = document.querySelectorAll(`#section-${section.id} video`);
-  const p = getProgress(section.id);
-  videos.forEach(video => {
-    const id = video.getAttribute("data-video-id");
-    if (p.videosWatched[id]) {
-      markWatchUI(id, true);
-    }
-    video.addEventListener("ended", () => {
-      p.videosWatched[id] = true;
-      markWatchUI(id, true);
-      saveState();
-      updateGateBanner(section);
-    });
-    // also count as watched if user scrubs to the end
-    video.addEventListener("timeupdate", () => {
-      if (video.duration && video.currentTime >= video.duration - 0.35) {
-        if (!p.videosWatched[id]) {
-          p.videosWatched[id] = true;
-          markWatchUI(id, true);
-          saveState();
-          updateGateBanner(section);
-        }
-      }
-    });
-  });
-}
-
-function markWatchUI(videoId, watched) {
-  const el = document.querySelector(`.watch-check[data-watch-for="${videoId}"]`);
-  if (!el) return;
-  if (watched) {
-    el.classList.add("done");
-    el.innerHTML = `<span class="dot"></span>Watched`;
-  }
-}
-
-// ---------- Quiz ----------
-// Two modes, chosen once and locked in:
-//   Beginner — no timer, free navigation, videos replayable, unlimited retries.
-//   Advanced — timed questions that auto-advance, one-way (no back/skip), each
-//     video plays once, and a failed attempt means a full restart from Q1.
-// Either way, passing requires QUIZ_PASS_PERCENT correct, and — only after
-// passing — officials must scroll through every explanation before continuing.
-function buildQuiz(section) {
-  const container = document.getElementById("quiz-container");
-  const p = getProgress(section.id);
-  const total = QUIZ_DATA.length;
-  let advancedTimer = null;
-
-  function letterFor(i) { return String.fromCharCode(65 + i); }
-
-  function renderExplanationMedia(media, label) {
-    if (!media || media.type === "none" || !media.ref) return "";
-    if (media.type === "image") {
-      return `<div class="quiz-media-wrap image"><img src="images/${media.ref}.png" alt="${label}"></div>`;
-    }
-    if (media.type === "video") {
-      return `<div class="quiz-media-wrap"><video controls preload="metadata" poster="posters/${media.ref}.jpg" src="videos/${media.ref}.mp4"></video></div>`;
-    }
-    if (media.type === "gdrive") {
-      return `<div class="quiz-media-wrap"><iframe src="https://drive.google.com/file/d/${media.ref}/preview" title="${label}" loading="lazy" allow="autoplay"></iframe></div>`;
-    }
-    return "";
-  }
-
-  // Question-time media. In Advanced mode, videos are self-hosted and gated
-  // to a single, uninterruptible playback — no native controls, no seeking,
-  // and once it ends (or once the question is left) it's gone for good.
-  function renderQuestionMedia(qi, media) {
-    if (!media || media.type === "none" || !media.ref) return "";
-    if (media.type === "image") {
-      return `<div class="quiz-media-wrap image"><img src="images/${media.ref}.png" alt="Question visual"></div>`;
-    }
-    if (media.type === "gdrive") {
-      return `<div class="quiz-media-wrap"><iframe src="https://drive.google.com/file/d/${media.ref}/preview" title="Question video" loading="lazy" allow="autoplay"></iframe></div>`;
-    }
-    if (media.type === "video") {
-      if (p.quizMode !== "advanced") {
-        return `<div class="quiz-media-wrap"><video controls preload="metadata" poster="posters/${media.ref}.jpg" src="videos/${media.ref}.mp4"></video></div>`;
-      }
-      if (p.videoConsumed[qi]) {
-        return `<div class="quiz-media-wrap video-consumed"><div class="quiz-video-consumed-msg">🔒 Video already played — advanced mode allows one viewing per question.</div></div>`;
-      }
-      return `
-        <div class="quiz-media-wrap video-once">
-          <video preload="metadata" poster="posters/${media.ref}.jpg" playsinline></video>
-          <button type="button" class="quiz-play-once-btn" data-play-ref="${media.ref}" data-qi="${qi}">&#9658; Play Video (one time only)</button>
-        </div>`;
-    }
-    return "";
-  }
-
-  function wireOncePlayButtons(onEnded) {
-    container.querySelectorAll(".quiz-play-once-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const wrap = btn.closest(".video-once");
-        const video = wrap.querySelector("video");
-        const ref = btn.getAttribute("data-play-ref");
-        const qi = parseInt(btn.getAttribute("data-qi"), 10);
-        video.src = `videos/${ref}.mp4`;
-        btn.remove();
-        video.play();
-        if (onEnded) onEnded();
-        video.addEventListener("ended", () => {
-          p.videoConsumed[qi] = true;
-          saveState();
-          wrap.outerHTML = `<div class="quiz-media-wrap video-consumed"><div class="quiz-video-consumed-msg">🔒 Video played — advanced mode allows one viewing per question.</div></div>`;
-        });
-      });
-    });
-  }
-
-  // ---------- Mode select ----------
-  function renderModeSelect() {
-    container.innerHTML = `
-      <div class="quiz-mode-select">
-        <div class="quiz-mode-card beginner">
-          <div class="quiz-mode-card-title">🟢 Beginner</div>
-          <p class="quiz-mode-card-sub">Recommended for new or first-time officials</p>
-          <ul>
-            <li>No time limit — think it through</li>
-            <li>Jump between questions freely, change any answer</li>
-            <li>Rewatch any video as many times as you like</li>
-            <li>Unlimited retakes until you pass</li>
-          </ul>
-          <button type="button" class="btn btn-primary" data-choose-mode="beginner">Choose Beginner</button>
-        </div>
-        <div class="quiz-mode-card advanced">
-          <div class="quiz-mode-card-title">🔴 Advanced</div>
-          <p class="quiz-mode-card-sub">Recommended for returning or veteran officials</p>
-          <ul>
-            <li>Timed questions — auto-advances when time runs out</li>
-            <li>One-way — no going back, no skipping ahead</li>
-            <li>Each video plays once and can't be replayed</li>
-            <li>One attempt at a time — a miss means restarting from Question 1</li>
-          </ul>
-          <button type="button" class="btn btn-primary" data-choose-mode="advanced">Choose Advanced</button>
-        </div>
-      </div>
-      <p class="quiz-mode-warning">⚠️ Once you choose a mode, you can't switch to the other one — pick whichever fits you best.</p>
-    `;
-    container.querySelectorAll("[data-choose-mode]").forEach(btn => {
-      btn.addEventListener("click", () => renderModeConfirm(btn.getAttribute("data-choose-mode")));
-    });
-  }
-
-  function renderModeConfirm(mode) {
-    const label = mode === "beginner" ? "Beginner" : "Advanced";
-    container.innerHTML = `
-      <div class="quiz-mode-confirm">
-        <p>You selected <strong>${label} mode</strong>. This can't be changed once you begin.</p>
-        <div class="quiz-nav-bar" style="justify-content:center;">
-          <button type="button" class="btn btn-secondary" id="quiz-mode-back-btn">&larr; Go Back</button>
-          <button type="button" class="btn btn-primary" id="quiz-mode-confirm-btn">Yes, Start ${label}</button>
-        </div>
-      </div>
-    `;
-    document.getElementById("quiz-mode-back-btn").addEventListener("click", renderModeSelect);
-    document.getElementById("quiz-mode-confirm-btn").addEventListener("click", () => {
-      p.quizMode = mode;
-      p.currentQuestionIndex = 0;
-      saveState();
-      renderEntry();
-    });
-  }
-
-  // ---------- Beginner mode (untimed, free navigation, unlimited retries) ----------
-  function allAnswered() {
-    return QUIZ_DATA.every((_, i) => p.quizAnswers[i] !== undefined);
-  }
-
-  function renderBeginnerPlaying() {
-    const qi = p.currentQuestionIndex;
-    const item = QUIZ_DATA[qi];
-    const answeredCount = Object.keys(p.quizAnswers).filter(k => p.quizAnswers[k] !== undefined).length;
-    const unansweredCount = total - answeredCount;
-    const attempted = p.quizSubmitted;
-
-    const dotsHTML = QUIZ_DATA.map((_, i) => {
-      let cls = "quiz-dot";
-      if (i === qi) cls += " current";
-      if (p.quizAnswers[i] !== undefined) cls += " answered";
-      if (attempted) {
-        if (p.quizResult[i] === true) cls += " correct";
-        else if (p.quizResult[i] === false) cls += " incorrect";
-      }
-      return `<button type="button" class="${cls}" data-jump="${i}" aria-label="Question ${i + 1}">${i + 1}</button>`;
-    }).join("");
-
-    const chosen = p.quizAnswers[qi];
-    const resultKnown = attempted && p.quizResult[qi] !== undefined;
-
-    const choicesHTML = item.choices.map((choice, oi) => {
-      let cls = "quiz-choice";
-      if (chosen === oi) cls += " selected";
-      if (resultKnown) {
-        if (item.correct.includes(oi)) cls += " correct";
-        else if (chosen === oi) cls += " incorrect";
-      }
-      return `
-        <button type="button" class="${cls}" data-oi="${oi}">
-          <span class="quiz-choice-letter">${letterFor(oi)}</span>
-          <span class="quiz-choice-text">${choice}</span>
-        </button>`;
-    }).join("");
-
-    let bannerHTML = "";
-    if (attempted) {
-      const correctCount = Object.values(p.quizResult).filter(v => v === true).length;
-      const percent = Math.round((correctCount / total) * 100);
-      bannerHTML = `
-        <div class="quiz-summary fail" style="margin-bottom:1rem;">
-          You scored ${correctCount} / ${total} (${percent}%). You need ${QUIZ_PASS_PERCENT}%+ to pass.
-          Green choices below are correct — red is what you picked. Fix the red ones and resubmit.
-        </div>`;
-    }
-
-    container.innerHTML = `
-      <div class="quiz-game-wrap">
-        <div class="quiz-mode-badge beginner">🟢 Beginner Mode</div>
-        <div class="quiz-progress-dots">${dotsHTML}</div>
-        ${bannerHTML}
-        <div class="quiz-game-card">
-          <div class="quiz-game-kicker">Question ${qi + 1} of ${total}</div>
-          ${renderQuestionMedia(qi, item.media)}
-          <p class="quiz-question-text">${item.question}</p>
-          <div class="quiz-choices">${choicesHTML}</div>
-        </div>
-        <div class="quiz-nav-bar">
-          <button class="btn btn-secondary" id="quiz-prev-btn" ${qi === 0 ? "disabled" : ""}>&larr; Previous</button>
-          <button class="btn btn-secondary" id="quiz-next-btn" ${qi === total - 1 ? "disabled" : ""}>Next &rarr;</button>
-          <div class="gate-spacer"></div>
-          <button class="btn btn-primary" id="quiz-submit-btn">${attempted ? "Resubmit Quiz" : "Submit Quiz"}</button>
-        </div>
-        ${unansweredCount > 0 ? `<p class="quiz-unanswered-note">${unansweredCount} question${unansweredCount === 1 ? "" : "s"} still unanswered — skip around freely, they'll just count as incorrect if you submit without going back.</p>` : ""}
-      </div>
-    `;
-
-    container.querySelectorAll(".quiz-choice").forEach(btn => {
-      btn.addEventListener("click", () => {
-        p.quizAnswers[qi] = parseInt(btn.getAttribute("data-oi"), 10);
-        saveState();
-        renderBeginnerPlaying();
-      });
-    });
-    container.querySelectorAll("[data-jump]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        p.currentQuestionIndex = parseInt(btn.getAttribute("data-jump"), 10);
-        saveState();
-        renderBeginnerPlaying();
-      });
-    });
-    const prevBtn = document.getElementById("quiz-prev-btn");
-    if (prevBtn) prevBtn.addEventListener("click", () => { p.currentQuestionIndex = Math.max(0, qi - 1); saveState(); renderBeginnerPlaying(); });
-    const nextBtn = document.getElementById("quiz-next-btn");
-    if (nextBtn) nextBtn.addEventListener("click", () => { p.currentQuestionIndex = Math.min(total - 1, qi + 1); saveState(); renderBeginnerPlaying(); });
-
-    const submitBtn = document.getElementById("quiz-submit-btn");
-    if (submitBtn) submitBtn.addEventListener("click", () => {
-      const result = {};
-      QUIZ_DATA.forEach((q, i) => { result[i] = q.correct.includes(p.quizAnswers[i]); });
-      const correctCount = Object.values(result).filter(Boolean).length;
-      const percent = Math.round((correctCount / total) * 100);
-      const passed = percent >= QUIZ_PASS_PERCENT;
-
-      p.quizSubmitted = true;
-      p.quizResult = result;
-      p.quizPassed = passed;
-      p.quizAttempts = (p.quizAttempts || 0) + 1;
-      saveState();
-      updateGateBanner(section);
-
-      if (passed) {
-        renderReview();
-      } else {
-        const firstWrong = QUIZ_DATA.findIndex((_, i) => result[i] === false);
-        p.currentQuestionIndex = firstWrong === -1 ? 0 : firstWrong;
-        saveState();
-        renderBeginnerPlaying();
-      }
-    });
-  }
-
-  // ---------- Advanced mode (timed, sequential, one-shot) ----------
-  function clearAdvancedTimer() {
-    if (advancedTimer) { clearInterval(advancedTimer); advancedTimer = null; }
-  }
-
-  function renderAdvancedPlaying() {
-    clearAdvancedTimer();
-    const qi = p.currentQuestionIndex;
-    const item = QUIZ_DATA[qi];
-    const isLast = qi === total - 1;
-    let secondsLeft = item.timeLimit || 30;
-    let timerStartedAt = null; // becomes non-null once counting actually begins
-
-    const dotsHTML = QUIZ_DATA.map((_, i) => {
-      let cls = "quiz-dot locked";
-      if (i === qi) cls += " current";
-      else if (i < qi) cls += " answered";
-      return `<span class="${cls}" aria-label="Question ${i + 1}">${i + 1}</span>`;
-    }).join("");
-
-    const chosen = p.quizAnswers[qi];
-    const choicesHTML = item.choices.map((choice, oi) => {
-      const cls = "quiz-choice" + (chosen === oi ? " selected" : "");
-      return `
-        <button type="button" class="${cls}" data-oi="${oi}">
-          <span class="quiz-choice-letter">${letterFor(oi)}</span>
-          <span class="quiz-choice-text">${choice}</span>
-        </button>`;
-    }).join("");
-
-    const hasVideo = item.media && item.media.type === "video" && !p.videoConsumed[qi];
-
-    container.innerHTML = `
-      <div class="quiz-game-wrap">
-        <div class="quiz-mode-badge advanced">🔴 Advanced Mode — one attempt, no going back</div>
-        <div class="quiz-progress-dots">${dotsHTML}</div>
-        <div class="quiz-timer-bar-wrap">
-          <div class="quiz-timer-bar" id="quiz-timer-bar" style="width:100%;"></div>
-        </div>
-        <p class="quiz-timer-text" id="quiz-timer-text">${hasVideo ? "Watch the video to begin the timer" : `${secondsLeft}s remaining`}</p>
-        <div class="quiz-game-card">
-          <div class="quiz-game-kicker">Question ${qi + 1} of ${total}</div>
-          ${renderQuestionMedia(qi, item.media)}
-          <p class="quiz-question-text">${item.question}</p>
-          <div class="quiz-choices">${choicesHTML}</div>
-        </div>
-        <div class="quiz-nav-bar">
-          <div class="gate-spacer"></div>
-          <button class="btn btn-primary" id="quiz-adv-next-btn" ${chosen === undefined ? "disabled" : ""}>${isLast ? "Finish Quiz" : "Next →"}</button>
-        </div>
-      </div>
-    `;
-
-    function startTimerNow() {
-      if (timerStartedAt) return;
-      timerStartedAt = Date.now();
-      const text = document.getElementById("quiz-timer-text");
-      if (text) text.textContent = `${secondsLeft}s remaining`;
-      advancedTimer = setInterval(() => {
-        secondsLeft -= 1;
-        const bar = document.getElementById("quiz-timer-bar");
-        const text = document.getElementById("quiz-timer-text");
-        if (bar) bar.style.width = Math.max(0, (secondsLeft / (item.timeLimit || 30)) * 100) + "%";
-        if (text) text.textContent = secondsLeft > 0 ? `${secondsLeft}s remaining` : "Time's up!";
-        if (secondsLeft <= 0) {
-          clearAdvancedTimer();
-          advance();
-        }
-      }, 1000);
-    }
-
-    if (hasVideo) {
-      wireOncePlayButtons(startTimerNow);
-    } else {
-      startTimerNow();
-    }
-
-    container.querySelectorAll(".quiz-choice").forEach(btn => {
-      btn.addEventListener("click", () => {
-        p.quizAnswers[qi] = parseInt(btn.getAttribute("data-oi"), 10);
-        saveState();
-        renderAdvancedPlaying();
-      });
-    });
-
-    function advance() {
-      clearAdvancedTimer();
-      saveState();
-      if (isLast) {
-        finishAdvanced();
-      } else {
-        p.currentQuestionIndex = qi + 1;
-        saveState();
-        renderAdvancedPlaying();
-      }
-    }
-
-    const nextBtn = document.getElementById("quiz-adv-next-btn");
-    if (nextBtn) nextBtn.addEventListener("click", () => { if (p.quizAnswers[qi] !== undefined) advance(); });
-  }
-
-  function finishAdvanced() {
-    const result = {};
-    QUIZ_DATA.forEach((q, i) => { result[i] = q.correct.includes(p.quizAnswers[i]); });
-    const correctCount = Object.values(result).filter(Boolean).length;
-    const percent = Math.round((correctCount / total) * 100);
-    const passed = percent >= QUIZ_PASS_PERCENT;
-
-    p.quizSubmitted = true;
-    p.quizResult = result;
-    p.quizPassed = passed;
-    p.quizAttempts = (p.quizAttempts || 0) + 1;
-    saveState();
-    updateGateBanner(section);
-
-    if (passed) {
-      renderReview();
-    } else {
-      renderAdvancedFail(correctCount, percent);
-    }
-  }
-
-  function renderAdvancedFail(correctCount, percent) {
-    container.innerHTML = `
-      <div class="quiz-game-wrap">
-        <div class="quiz-summary fail">
-          You scored ${correctCount} / ${total} (${percent}%). You need ${QUIZ_PASS_PERCENT}%+ to pass Advanced mode.<br>
-          Per Advanced mode rules, you'll restart the full 20-question quiz from Question 1 — this was attempt #${p.quizAttempts}.
-        </div>
-        <div class="quiz-nav-bar" style="justify-content:center;margin-top:1rem;">
-          <button type="button" class="btn btn-primary" id="quiz-adv-restart-btn">Restart Advanced Quiz</button>
-        </div>
-      </div>
-    `;
-    document.getElementById("quiz-adv-restart-btn").addEventListener("click", () => {
-      p.quizAnswers = {};
-      p.quizSubmitted = false;
-      p.quizResult = {};
-      p.videoConsumed = {};
-      p.currentQuestionIndex = 0;
-      saveState();
-      renderAdvancedPlaying();
-    });
-  }
-
-  // ---------- Shared: explanation review (both modes land here after passing) ----------
-  function renderReview() {
-    const itemsHTML = QUIZ_DATA.map((item, qi) => {
-      const chosen = p.quizAnswers[qi];
-      const choicesHTML = item.choices.map((choice, oi) => {
-        let cls = "quiz-choice review";
-        if (item.correct.includes(oi)) cls += " correct";
-        else if (chosen === oi) cls += " incorrect";
-        return `<div class="${cls}"><span class="quiz-choice-letter">${letterFor(oi)}</span><span class="quiz-choice-text">${choice}</span></div>`;
-      }).join("");
-      return `
-        <div class="quiz-review-item">
-          <div class="quiz-game-kicker">Question ${qi + 1} of ${total}</div>
-          ${renderExplanationMedia(item.media, "Question video")}
-          <p class="quiz-question-text">${item.question}</p>
-          <div class="quiz-choices">${choicesHTML}</div>
-          <div class="quiz-explanation">
-            <h4>Explanation</h4>
-            ${item.explanation ? `<p>${item.explanation}</p>` : ""}
-            ${renderExplanationMedia(item.explanationMedia, "Explanation video")}
-          </div>
-        </div>`;
-    }).join("");
-
-    const correctCount = Object.values(p.quizResult).filter(Boolean).length;
-    const percent = Math.round((correctCount / total) * 100);
-    const modeLabel = p.quizMode === "advanced" ? "Advanced" : "Beginner";
-
-    container.innerHTML = `
-      <div class="quiz-game-wrap">
-        <div class="quiz-summary pass" style="margin-bottom:1rem;">
-          🎉 You passed ${modeLabel} mode with ${correctCount} / ${total} (${percent}%) in ${p.quizAttempts} attempt${p.quizAttempts === 1 ? "" : "s"}!
-          Scroll through every explanation below — the Continue button at the bottom of the page unlocks once you've reached the end.
-        </div>
-        <div class="quiz-review-list">${itemsHTML}</div>
-        <div id="quiz-review-sentinel" style="height:1px;"></div>
-      </div>
-    `;
-
-    if (p.explanationsReviewed) return;
-
-    const sentinel = document.getElementById("quiz-review-sentinel");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !p.explanationsReviewed) {
-          p.explanationsReviewed = true;
-          saveState();
-          updateGateBanner(section);
-          observer.disconnect();
-        }
-      });
-    }, { threshold: 0.01 });
-    observer.observe(sentinel);
-  }
-
-  // ---------- Entry point ----------
-  function renderEntry() {
-    if (p.quizPassed) {
-      renderReview();
-    } else if (p.quizMode === "beginner") {
-      renderBeginnerPlaying();
-    } else if (p.quizMode === "advanced") {
-      renderAdvancedPlaying();
-    } else {
-      renderModeSelect();
-    }
-  }
-
-  renderEntry();
-}
-
-// ---------- Form ----------
-function buildForm(section) {
-  const select = document.getElementById("input-association");
-  ASSOCIATIONS.forEach(a => {
-    const opt = document.createElement("option");
-    opt.value = a; opt.textContent = a;
-    select.appendChild(opt);
-  });
-
-  const form = document.getElementById("verify-form");
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    let valid = true;
-    const name = document.getElementById("input-name").value.trim();
-    const email = document.getElementById("input-email").value.trim();
-    const association = document.getElementById("input-association").value;
-
-    const nameField = document.getElementById("field-name");
-    const emailField = document.getElementById("field-email");
-    const assocField = document.getElementById("field-association");
-    [nameField, emailField, assocField].forEach(f => f.classList.remove("invalid"));
-
-    if (!name) { nameField.classList.add("invalid"); valid = false; }
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) { emailField.classList.add("invalid"); valid = false; }
-    if (!association) { assocField.classList.add("invalid"); valid = false; }
-    if (!valid) return;
-
-    const submitBtn = document.getElementById("submit-btn");
-    const status = document.getElementById("submit-status");
-    submitBtn.disabled = true;
-    status.textContent = "Submitting…";
-
-    const payload = {
-      name, email, association,
-      commissionerEmail: COMMISSIONER_EMAILS[association] || "",
-      completedAt: new Date().toISOString(),
-      quizScore: computeQuizScore(),
-      quizMode: computeQuizMode(),
-      quizAttempts: computeQuizAttempts()
-    };
-
-    fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors", // Apps Script web apps don't return CORS headers by default
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    }).then(() => {
-      // no-cors gives an opaque response, so we optimistically treat the request as sent
-      onSubmitSuccess(section);
-    }).catch(() => {
-      status.textContent = "Something went wrong sending your verification. Please check your connection and try again, or email your commissioner directly.";
-      submitBtn.disabled = false;
-    });
-  });
-}
-
-function computeQuizScore() {
-  const p = getProgress("knowledge-check");
-  let correct = 0;
-  QUIZ_DATA.forEach((item, qi) => { if (item.correct.includes(p.quizAnswers[qi])) correct++; });
-  return `${correct}/${QUIZ_DATA.length}`;
-}
-
-function computeQuizMode() {
-  const p = getProgress("knowledge-check");
-  return p.quizMode === "advanced" ? "Advanced" : "Beginner";
-}
-
-function computeQuizAttempts() {
-  const p = getProgress("knowledge-check");
-  return p.quizAttempts || 1;
-}
-
-function onSubmitSuccess(section) {
-  document.getElementById("verify-form-wrap").querySelector("#verify-form").style.display = "none";
-  document.getElementById("success-panel").style.display = "block";
-  const p = getProgress(section.id);
-  p.formSubmitted = true;
-  p.elapsedSeconds = section.minSeconds; // satisfy timer requirement now that they've completed the real gate (submission)
-  saveState();
-  updateGateBanner(section);
-  renderSidebar();
-}
-
-// ---------- Mobile sidebar ----------
-function openSidebarMobile() {
-  document.getElementById("sidebar").classList.add("open");
-  document.getElementById("sidebar-scrim").classList.add("show");
-}
-function closeSidebarMobile() {
-  document.getElementById("sidebar").classList.remove("open");
-  document.getElementById("sidebar-scrim").classList.remove("show");
-}
-
-// ---------- Init ----------
-document.addEventListener("DOMContentLoaded", () => {
-  loadState();
-  document.getElementById("hamburger-btn").addEventListener("click", openSidebarMobile);
-  document.getElementById("sidebar-scrim").addEventListener("click", closeSidebarMobile);
-
-  // resume at the first not-yet-complete section
-  let resumeIndex = TRAINING_SECTIONS.findIndex(s => !sectionMeetsRequirements(s));
-  if (resumeIndex === -1) resumeIndex = TRAINING_SECTIONS.length - 1;
-  state.currentIndex = resumeIndex;
-
-  renderSidebar();
-  renderSection(state.currentIndex);
-});
-
-window.addEventListener("beforeunload", () => { saveState(); });
