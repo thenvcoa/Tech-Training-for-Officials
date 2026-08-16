@@ -302,7 +302,7 @@ function buildQuiz(section) {
     const qi = p.currentQuestionIndex;
     const item = QUIZ_DATA[qi];
     const answeredCount = Object.keys(p.quizAnswers).filter(k => p.quizAnswers[k] !== undefined).length;
-    const ready = allAnswered();
+    const unansweredCount = total - answeredCount;
     const attempted = p.quizSubmitted;
 
     const dotsHTML = QUIZ_DATA.map((_, i) => {
@@ -358,9 +358,9 @@ function buildQuiz(section) {
           <button class="btn btn-secondary" id="quiz-prev-btn" ${qi === 0 ? "disabled" : ""}>&larr; Previous</button>
           <button class="btn btn-secondary" id="quiz-next-btn" ${qi === total - 1 ? "disabled" : ""}>Next &rarr;</button>
           <div class="gate-spacer"></div>
-          <button class="btn btn-primary" id="quiz-submit-btn" ${ready ? "" : "disabled"}>${attempted ? "Resubmit Quiz" : "Submit Quiz"}</button>
+          <button class="btn btn-primary" id="quiz-submit-btn">${attempted ? "Resubmit Quiz" : "Submit Quiz"}</button>
         </div>
-        ${!ready ? `<p class="quiz-unanswered-note">${total - answeredCount} question${total - answeredCount === 1 ? "" : "s"} still need${total - answeredCount === 1 ? "s" : ""} an answer before you can submit.</p>` : ""}
+        ${unansweredCount > 0 ? `<p class="quiz-unanswered-note">${unansweredCount} question${unansweredCount === 1 ? "" : "s"} still unanswered — skip around freely, they'll just count as incorrect if you submit without going back.</p>` : ""}
       </div>
     `;
 
@@ -388,7 +388,6 @@ function buildQuiz(section) {
     });
     const submitBtn = document.getElementById("quiz-submit-btn");
     if (submitBtn) submitBtn.addEventListener("click", () => {
-      if (!allAnswered()) return;
       const result = {};
       QUIZ_DATA.forEach((q, i) => { result[i] = q.correct.includes(p.quizAnswers[i]); });
       const correctCount = Object.values(result).filter(Boolean).length;
