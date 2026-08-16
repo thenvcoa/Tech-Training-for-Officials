@@ -349,10 +349,10 @@ function buildQuiz(section) {
           <div class="quiz-mode-card-title">🟢 Beginner</div>
           <p class="quiz-mode-card-sub">Recommended for new or first-time officials</p>
           <ul>
-            <li>No time limit — think it through</li>
-            <li>Jump between questions freely, change any answer</li>
-            <li>Rewatch any video as many times as you like</li>
-            <li>Unlimited retakes until you pass</li>
+            <li>No time limit — think it through at your own pace</li>
+            <li>Jump between questions freely, change any answer before final submission</li>
+            <li>Rewatch videos as many times as you like</li>
+            <li>Only retake missed questions on subsequent attempts</li>
           </ul>
           <button type="button" class="btn btn-primary" data-choose-mode="beginner">Choose Beginner</button>
         </div>
@@ -361,9 +361,9 @@ function buildQuiz(section) {
           <p class="quiz-mode-card-sub">Recommended for returning or veteran officials</p>
           <ul>
             <li>Timed questions — auto-advances when time runs out</li>
-            <li>One-way — no going back, no skipping ahead</li>
-            <li>Each video plays once and can't be replayed</li>
-            <li>One attempt at a time — a miss means restarting from Question 1</li>
+            <li>Questions close after time limit — no going back, no skipping ahead</li>
+            <li>Each video plays only once and can't be replayed - mimics real time judging</li>
+            <li>One complete attempt at a time — a failed score means restarting from Question 1</li>
           </ul>
           <button type="button" class="btn btn-primary" data-choose-mode="advanced">Choose Advanced</button>
         </div>
