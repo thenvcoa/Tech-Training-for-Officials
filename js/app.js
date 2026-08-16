@@ -52,7 +52,10 @@ function getProgress(sectionId) {
       quizPassed: false,
       quizResult: {},
       explanationsReviewed: false,
-      currentQuestionIndex: 0
+      currentQuestionIndex: 0,
+      quizMode: null,
+      quizAttempts: 0,
+      videoConsumed: {}
     };
   }
   const p = state.sectionProgress[sectionId];
@@ -60,6 +63,9 @@ function getProgress(sectionId) {
   if (!p.quizResult) p.quizResult = {};
   if (typeof p.explanationsReviewed !== "boolean") p.explanationsReviewed = false;
   if (typeof p.currentQuestionIndex !== "number") p.currentQuestionIndex = 0;
+  if (typeof p.quizMode === "undefined") p.quizMode = null;
+  if (typeof p.quizAttempts !== "number") p.quizAttempts = 0;
+  if (!p.videoConsumed) p.videoConsumed = {};
   return p;
 }
 
@@ -260,45 +266,141 @@ function markWatchUI(videoId, watched) {
 }
 
 // ---------- Quiz ----------
-// Trivia-game style knowledge check. Officials move freely between
-// questions (no timer, no forced order) and can change any answer right up
-// until they submit. A failed attempt colors each question's choices —
-// green for the correct one, red for whatever they picked instead — but
-// never reveals *why*. Only after reaching the pass threshold do the full
-// explanations (and any explanation videos) unlock, and officials must
-// scroll through every one of them before the training lets them continue.
+// Two modes, chosen once and locked in:
+//   Beginner — no timer, free navigation, videos replayable, unlimited retries.
+//   Advanced — timed questions that auto-advance, one-way (no back/skip), each
+//     video plays once, and a failed attempt means a full restart from Q1.
+// Either way, passing requires QUIZ_PASS_PERCENT correct, and — only after
+// passing — officials must scroll through every explanation before continuing.
 function buildQuiz(section) {
   const container = document.getElementById("quiz-container");
   const p = getProgress(section.id);
   const total = QUIZ_DATA.length;
+  let advancedTimer = null;
 
   function letterFor(i) { return String.fromCharCode(65 + i); }
 
-  function renderVideoEmbed(type, ref, label) {
-    if (!type || type === "none" || !ref) return "";
-    if (type === "youtube") {
-      return `<div class="quiz-video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/${ref}" title="${label}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+  function renderExplanationMedia(media, label) {
+    if (!media || media.type === "none" || !media.ref) return "";
+    if (media.type === "image") {
+      return `<div class="quiz-media-wrap image"><img src="images/${media.ref}.png" alt="${label}"></div>`;
     }
-    if (type === "gdrive") {
-      return `<div class="quiz-video-wrap"><iframe src="https://drive.google.com/file/d/${ref}/preview" title="${label}" loading="lazy" allow="autoplay"></iframe></div>`;
+    if (media.type === "video") {
+      return `<div class="quiz-media-wrap"><video controls preload="metadata" poster="posters/${media.ref}.jpg" src="videos/${media.ref}.mp4"></video></div>`;
     }
-    if (type === "mp4") {
-      return `<div class="quiz-video-wrap"><video controls preload="metadata" src="${ref}"></video></div>`;
+    if (media.type === "gdrive") {
+      return `<div class="quiz-media-wrap"><iframe src="https://drive.google.com/file/d/${media.ref}/preview" title="${label}" loading="lazy" allow="autoplay"></iframe></div>`;
     }
     return "";
   }
 
+  // Question-time media. In Advanced mode, videos are self-hosted and gated
+  // to a single, uninterruptible playback — no native controls, no seeking,
+  // and once it ends (or once the question is left) it's gone for good.
+  function renderQuestionMedia(qi, media) {
+    if (!media || media.type === "none" || !media.ref) return "";
+    if (media.type === "image") {
+      return `<div class="quiz-media-wrap image"><img src="images/${media.ref}.png" alt="Question visual"></div>`;
+    }
+    if (media.type === "gdrive") {
+      return `<div class="quiz-media-wrap"><iframe src="https://drive.google.com/file/d/${media.ref}/preview" title="Question video" loading="lazy" allow="autoplay"></iframe></div>`;
+    }
+    if (media.type === "video") {
+      if (p.quizMode !== "advanced") {
+        return `<div class="quiz-media-wrap"><video controls preload="metadata" poster="posters/${media.ref}.jpg" src="videos/${media.ref}.mp4"></video></div>`;
+      }
+      if (p.videoConsumed[qi]) {
+        return `<div class="quiz-media-wrap video-consumed"><div class="quiz-video-consumed-msg">🔒 Video already played — advanced mode allows one viewing per question.</div></div>`;
+      }
+      return `
+        <div class="quiz-media-wrap video-once">
+          <video preload="metadata" poster="posters/${media.ref}.jpg" playsinline></video>
+          <button type="button" class="quiz-play-once-btn" data-play-ref="${media.ref}" data-qi="${qi}">&#9658; Play Video (one time only)</button>
+        </div>`;
+    }
+    return "";
+  }
+
+  function wireOncePlayButtons(onEnded) {
+    container.querySelectorAll(".quiz-play-once-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const wrap = btn.closest(".video-once");
+        const video = wrap.querySelector("video");
+        const ref = btn.getAttribute("data-play-ref");
+        const qi = parseInt(btn.getAttribute("data-qi"), 10);
+        video.src = `videos/${ref}.mp4`;
+        btn.remove();
+        video.play();
+        if (onEnded) onEnded();
+        video.addEventListener("ended", () => {
+          p.videoConsumed[qi] = true;
+          saveState();
+          wrap.outerHTML = `<div class="quiz-media-wrap video-consumed"><div class="quiz-video-consumed-msg">🔒 Video played — advanced mode allows one viewing per question.</div></div>`;
+        });
+      });
+    });
+  }
+
+  // ---------- Mode select ----------
+  function renderModeSelect() {
+    container.innerHTML = `
+      <div class="quiz-mode-select">
+        <div class="quiz-mode-card beginner">
+          <div class="quiz-mode-card-title">🟢 Beginner</div>
+          <p class="quiz-mode-card-sub">Recommended for new or first-time officials</p>
+          <ul>
+            <li>No time limit — think it through</li>
+            <li>Jump between questions freely, change any answer</li>
+            <li>Rewatch any video as many times as you like</li>
+            <li>Unlimited retakes until you pass</li>
+          </ul>
+          <button type="button" class="btn btn-primary" data-choose-mode="beginner">Choose Beginner</button>
+        </div>
+        <div class="quiz-mode-card advanced">
+          <div class="quiz-mode-card-title">🔴 Advanced</div>
+          <p class="quiz-mode-card-sub">Recommended for returning or veteran officials</p>
+          <ul>
+            <li>Timed questions — auto-advances when time runs out</li>
+            <li>One-way — no going back, no skipping ahead</li>
+            <li>Each video plays once and can't be replayed</li>
+            <li>One attempt at a time — a miss means restarting from Question 1</li>
+          </ul>
+          <button type="button" class="btn btn-primary" data-choose-mode="advanced">Choose Advanced</button>
+        </div>
+      </div>
+      <p class="quiz-mode-warning">⚠️ Once you choose a mode, you can't switch to the other one — pick whichever fits you best.</p>
+    `;
+    container.querySelectorAll("[data-choose-mode]").forEach(btn => {
+      btn.addEventListener("click", () => renderModeConfirm(btn.getAttribute("data-choose-mode")));
+    });
+  }
+
+  function renderModeConfirm(mode) {
+    const label = mode === "beginner" ? "Beginner" : "Advanced";
+    container.innerHTML = `
+      <div class="quiz-mode-confirm">
+        <p>You selected <strong>${label} mode</strong>. This can't be changed once you begin.</p>
+        <div class="quiz-nav-bar" style="justify-content:center;">
+          <button type="button" class="btn btn-secondary" id="quiz-mode-back-btn">&larr; Go Back</button>
+          <button type="button" class="btn btn-primary" id="quiz-mode-confirm-btn">Yes, Start ${label}</button>
+        </div>
+      </div>
+    `;
+    document.getElementById("quiz-mode-back-btn").addEventListener("click", renderModeSelect);
+    document.getElementById("quiz-mode-confirm-btn").addEventListener("click", () => {
+      p.quizMode = mode;
+      p.currentQuestionIndex = 0;
+      saveState();
+      renderEntry();
+    });
+  }
+
+  // ---------- Beginner mode (untimed, free navigation, unlimited retries) ----------
   function allAnswered() {
     return QUIZ_DATA.every((_, i) => p.quizAnswers[i] !== undefined);
   }
 
-  function scoreNow() {
-    let correct = 0;
-    QUIZ_DATA.forEach((item, i) => { if (item.correct.includes(p.quizAnswers[i])) correct++; });
-    return correct;
-  }
-
-  function renderPlaying() {
+  function renderBeginnerPlaying() {
     const qi = p.currentQuestionIndex;
     const item = QUIZ_DATA[qi];
     const answeredCount = Object.keys(p.quizAnswers).filter(k => p.quizAnswers[k] !== undefined).length;
@@ -346,11 +448,12 @@ function buildQuiz(section) {
 
     container.innerHTML = `
       <div class="quiz-game-wrap">
+        <div class="quiz-mode-badge beginner">🟢 Beginner Mode</div>
         <div class="quiz-progress-dots">${dotsHTML}</div>
         ${bannerHTML}
         <div class="quiz-game-card">
           <div class="quiz-game-kicker">Question ${qi + 1} of ${total}</div>
-          ${renderVideoEmbed(item.videoType, item.videoRef, "Question video")}
+          ${renderQuestionMedia(qi, item.media)}
           <p class="quiz-question-text">${item.question}</p>
           <div class="quiz-choices">${choicesHTML}</div>
         </div>
@@ -368,24 +471,21 @@ function buildQuiz(section) {
       btn.addEventListener("click", () => {
         p.quizAnswers[qi] = parseInt(btn.getAttribute("data-oi"), 10);
         saveState();
-        renderPlaying();
+        renderBeginnerPlaying();
       });
     });
     container.querySelectorAll("[data-jump]").forEach(btn => {
       btn.addEventListener("click", () => {
         p.currentQuestionIndex = parseInt(btn.getAttribute("data-jump"), 10);
         saveState();
-        renderPlaying();
+        renderBeginnerPlaying();
       });
     });
     const prevBtn = document.getElementById("quiz-prev-btn");
-    if (prevBtn) prevBtn.addEventListener("click", () => {
-      p.currentQuestionIndex = Math.max(0, qi - 1); saveState(); renderPlaying();
-    });
+    if (prevBtn) prevBtn.addEventListener("click", () => { p.currentQuestionIndex = Math.max(0, qi - 1); saveState(); renderBeginnerPlaying(); });
     const nextBtn = document.getElementById("quiz-next-btn");
-    if (nextBtn) nextBtn.addEventListener("click", () => {
-      p.currentQuestionIndex = Math.min(total - 1, qi + 1); saveState(); renderPlaying();
-    });
+    if (nextBtn) nextBtn.addEventListener("click", () => { p.currentQuestionIndex = Math.min(total - 1, qi + 1); saveState(); renderBeginnerPlaying(); });
+
     const submitBtn = document.getElementById("quiz-submit-btn");
     if (submitBtn) submitBtn.addEventListener("click", () => {
       const result = {};
@@ -397,6 +497,7 @@ function buildQuiz(section) {
       p.quizSubmitted = true;
       p.quizResult = result;
       p.quizPassed = passed;
+      p.quizAttempts = (p.quizAttempts || 0) + 1;
       saveState();
       updateGateBanner(section);
 
@@ -406,11 +507,157 @@ function buildQuiz(section) {
         const firstWrong = QUIZ_DATA.findIndex((_, i) => result[i] === false);
         p.currentQuestionIndex = firstWrong === -1 ? 0 : firstWrong;
         saveState();
-        renderPlaying();
+        renderBeginnerPlaying();
       }
     });
   }
 
+  // ---------- Advanced mode (timed, sequential, one-shot) ----------
+  function clearAdvancedTimer() {
+    if (advancedTimer) { clearInterval(advancedTimer); advancedTimer = null; }
+  }
+
+  function renderAdvancedPlaying() {
+    clearAdvancedTimer();
+    const qi = p.currentQuestionIndex;
+    const item = QUIZ_DATA[qi];
+    const isLast = qi === total - 1;
+    let secondsLeft = item.timeLimit || 30;
+    let timerStartedAt = null; // becomes non-null once counting actually begins
+
+    const dotsHTML = QUIZ_DATA.map((_, i) => {
+      let cls = "quiz-dot locked";
+      if (i === qi) cls += " current";
+      else if (i < qi) cls += " answered";
+      return `<span class="${cls}" aria-label="Question ${i + 1}">${i + 1}</span>`;
+    }).join("");
+
+    const chosen = p.quizAnswers[qi];
+    const choicesHTML = item.choices.map((choice, oi) => {
+      const cls = "quiz-choice" + (chosen === oi ? " selected" : "");
+      return `
+        <button type="button" class="${cls}" data-oi="${oi}">
+          <span class="quiz-choice-letter">${letterFor(oi)}</span>
+          <span class="quiz-choice-text">${choice}</span>
+        </button>`;
+    }).join("");
+
+    const hasVideo = item.media && item.media.type === "video" && !p.videoConsumed[qi];
+
+    container.innerHTML = `
+      <div class="quiz-game-wrap">
+        <div class="quiz-mode-badge advanced">🔴 Advanced Mode — one attempt, no going back</div>
+        <div class="quiz-progress-dots">${dotsHTML}</div>
+        <div class="quiz-timer-bar-wrap">
+          <div class="quiz-timer-bar" id="quiz-timer-bar" style="width:100%;"></div>
+        </div>
+        <p class="quiz-timer-text" id="quiz-timer-text">${hasVideo ? "Watch the video to begin the timer" : `${secondsLeft}s remaining`}</p>
+        <div class="quiz-game-card">
+          <div class="quiz-game-kicker">Question ${qi + 1} of ${total}</div>
+          ${renderQuestionMedia(qi, item.media)}
+          <p class="quiz-question-text">${item.question}</p>
+          <div class="quiz-choices">${choicesHTML}</div>
+        </div>
+        <div class="quiz-nav-bar">
+          <div class="gate-spacer"></div>
+          <button class="btn btn-primary" id="quiz-adv-next-btn" ${chosen === undefined ? "disabled" : ""}>${isLast ? "Finish Quiz" : "Next →"}</button>
+        </div>
+      </div>
+    `;
+
+    function startTimerNow() {
+      if (timerStartedAt) return;
+      timerStartedAt = Date.now();
+      const text = document.getElementById("quiz-timer-text");
+      if (text) text.textContent = `${secondsLeft}s remaining`;
+      advancedTimer = setInterval(() => {
+        secondsLeft -= 1;
+        const bar = document.getElementById("quiz-timer-bar");
+        const text = document.getElementById("quiz-timer-text");
+        if (bar) bar.style.width = Math.max(0, (secondsLeft / (item.timeLimit || 30)) * 100) + "%";
+        if (text) text.textContent = secondsLeft > 0 ? `${secondsLeft}s remaining` : "Time's up!";
+        if (secondsLeft <= 0) {
+          clearAdvancedTimer();
+          advance();
+        }
+      }, 1000);
+    }
+
+    if (hasVideo) {
+      wireOncePlayButtons(startTimerNow);
+    } else {
+      startTimerNow();
+    }
+
+    container.querySelectorAll(".quiz-choice").forEach(btn => {
+      btn.addEventListener("click", () => {
+        p.quizAnswers[qi] = parseInt(btn.getAttribute("data-oi"), 10);
+        saveState();
+        renderAdvancedPlaying();
+      });
+    });
+
+    function advance() {
+      clearAdvancedTimer();
+      saveState();
+      if (isLast) {
+        finishAdvanced();
+      } else {
+        p.currentQuestionIndex = qi + 1;
+        saveState();
+        renderAdvancedPlaying();
+      }
+    }
+
+    const nextBtn = document.getElementById("quiz-adv-next-btn");
+    if (nextBtn) nextBtn.addEventListener("click", () => { if (p.quizAnswers[qi] !== undefined) advance(); });
+  }
+
+  function finishAdvanced() {
+    const result = {};
+    QUIZ_DATA.forEach((q, i) => { result[i] = q.correct.includes(p.quizAnswers[i]); });
+    const correctCount = Object.values(result).filter(Boolean).length;
+    const percent = Math.round((correctCount / total) * 100);
+    const passed = percent >= QUIZ_PASS_PERCENT;
+
+    p.quizSubmitted = true;
+    p.quizResult = result;
+    p.quizPassed = passed;
+    p.quizAttempts = (p.quizAttempts || 0) + 1;
+    saveState();
+    updateGateBanner(section);
+
+    if (passed) {
+      renderReview();
+    } else {
+      renderAdvancedFail(correctCount, percent);
+    }
+  }
+
+  function renderAdvancedFail(correctCount, percent) {
+    container.innerHTML = `
+      <div class="quiz-game-wrap">
+        <div class="quiz-summary fail">
+          You scored ${correctCount} / ${total} (${percent}%). You need ${QUIZ_PASS_PERCENT}%+ to pass Advanced mode.<br>
+          Per Advanced mode rules, you'll restart the full 20-question quiz from Question 1 — this was attempt #${p.quizAttempts}.
+        </div>
+        <div class="quiz-nav-bar" style="justify-content:center;margin-top:1rem;">
+          <button type="button" class="btn btn-primary" id="quiz-adv-restart-btn">Restart Advanced Quiz</button>
+        </div>
+      </div>
+    `;
+    document.getElementById("quiz-adv-restart-btn").addEventListener("click", () => {
+      p.quizAnswers = {};
+      p.quizSubmitted = false;
+      p.quizResult = {};
+      p.videoConsumed = {};
+      p.currentQuestionIndex = 0;
+      saveState();
+      renderAdvancedPlaying();
+    });
+  }
+
+  // ---------- Shared: explanation review (both modes land here after passing) ----------
   function renderReview() {
     const itemsHTML = QUIZ_DATA.map((item, qi) => {
       const chosen = p.quizAnswers[qi];
@@ -423,25 +670,26 @@ function buildQuiz(section) {
       return `
         <div class="quiz-review-item">
           <div class="quiz-game-kicker">Question ${qi + 1} of ${total}</div>
-          ${renderVideoEmbed(item.videoType, item.videoRef, "Question video")}
+          ${renderExplanationMedia(item.media, "Question video")}
           <p class="quiz-question-text">${item.question}</p>
           <div class="quiz-choices">${choicesHTML}</div>
           <div class="quiz-explanation">
             <h4>Explanation</h4>
             ${item.explanation ? `<p>${item.explanation}</p>` : ""}
-            ${renderVideoEmbed(item.explanationVideoType, item.explanationVideoRef, "Explanation video")}
+            ${renderExplanationMedia(item.explanationMedia, "Explanation video")}
           </div>
         </div>`;
     }).join("");
 
     const correctCount = Object.values(p.quizResult).filter(Boolean).length;
     const percent = Math.round((correctCount / total) * 100);
+    const modeLabel = p.quizMode === "advanced" ? "Advanced" : "Beginner";
 
     container.innerHTML = `
       <div class="quiz-game-wrap">
         <div class="quiz-summary pass" style="margin-bottom:1rem;">
-          🎉 You passed with ${correctCount} / ${total} (${percent}%)! Scroll through every explanation
-          below — the Continue button at the bottom of the page unlocks once you've reached the end.
+          🎉 You passed ${modeLabel} mode with ${correctCount} / ${total} (${percent}%) in ${p.quizAttempts} attempt${p.quizAttempts === 1 ? "" : "s"}!
+          Scroll through every explanation below — the Continue button at the bottom of the page unlocks once you've reached the end.
         </div>
         <div class="quiz-review-list">${itemsHTML}</div>
         <div id="quiz-review-sentinel" style="height:1px;"></div>
@@ -464,11 +712,20 @@ function buildQuiz(section) {
     observer.observe(sentinel);
   }
 
-  if (p.quizPassed) {
-    renderReview();
-  } else {
-    renderPlaying();
+  // ---------- Entry point ----------
+  function renderEntry() {
+    if (p.quizPassed) {
+      renderReview();
+    } else if (p.quizMode === "beginner") {
+      renderBeginnerPlaying();
+    } else if (p.quizMode === "advanced") {
+      renderAdvancedPlaying();
+    } else {
+      renderModeSelect();
+    }
   }
+
+  renderEntry();
 }
 
 // ---------- Form ----------
@@ -508,7 +765,9 @@ function buildForm(section) {
       name, email, association,
       commissionerEmail: COMMISSIONER_EMAILS[association] || "",
       completedAt: new Date().toISOString(),
-      quizScore: computeQuizScore()
+      quizScore: computeQuizScore(),
+      quizMode: computeQuizMode(),
+      quizAttempts: computeQuizAttempts()
     };
 
     fetch(APPS_SCRIPT_URL, {
@@ -531,6 +790,16 @@ function computeQuizScore() {
   let correct = 0;
   QUIZ_DATA.forEach((item, qi) => { if (item.correct.includes(p.quizAnswers[qi])) correct++; });
   return `${correct}/${QUIZ_DATA.length}`;
+}
+
+function computeQuizMode() {
+  const p = getProgress("knowledge-check");
+  return p.quizMode === "advanced" ? "Advanced" : "Beginner";
+}
+
+function computeQuizAttempts() {
+  const p = getProgress("knowledge-check");
+  return p.quizAttempts || 1;
 }
 
 function onSubmitSuccess(section) {
