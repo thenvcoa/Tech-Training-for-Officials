@@ -411,10 +411,10 @@ const SECTION_4 = {
       </div>
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s24_hand_to_foot_interpretation_change.jpg" data-video-id="v15"><source src="videos/s24_hand_to_foot_interpretation_change.mp4" type="video/mp4"></video></div>
-        <div class="video-label">Interpretation Change — Legal <span class="watch-check" data-watch-for="v15"><span class="dot"></span>Not watched</span></div>
+        <div class="video-label">*Interpretation Change — Legal <span class="watch-check" data-watch-for="v15"><span class="dot"></span>Not watched</span></div>
       </div>
     </div>
-    <p style="color:var(--text-soft);font-size:.9rem;">This interpretation changed from NFHS/USA Cheer's original decision: the bracer may drop to a
+    <p style="color:var(--text-soft);font-size:.9rem;">*This interpretation changed from NFHS/USA Cheer's original decision: the bracer may drop to a
     loading position for a better line with the top, just like other braced flips.</p>
 
     <div class="card">
