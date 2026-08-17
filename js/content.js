@@ -568,7 +568,7 @@ const SECTION_6 = {
     </div>
 
     <div class="card" style="padding:.6rem;">
-      <img src="images/av_jewelry_panel.png" alt="Jewelry appearance violations — rule 2.1.1 guide with legal and illegal examples" style="border-radius:10px;">
+      <img src="images/av_jewelry_panel.png" alt="Jewelry appearance violations — rule 2.1.1 guide with legal and illegal examples" style="border-radius:10px;width:100%;">
     </div>
 
     <div class="card" style="padding:.6rem;">
@@ -576,7 +576,7 @@ const SECTION_6 = {
     </div>
 
     <div class="card" style="padding:.6rem;">
-      <img src="images/av_memorial_panel.png" alt="Memorial ribbons pinned to uniform — rule guide with examples" style="border-radius:10px;">
+      <img src="images/av_memorial_panel.png" alt="Memorial ribbons pinned to uniform — rule guide with examples" style="border-radius:10px;width:100%;">
     </div>
   `
 };
