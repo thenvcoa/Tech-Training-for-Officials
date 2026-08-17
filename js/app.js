@@ -280,13 +280,20 @@ function buildQuiz(section) {
 
   function letterFor(i) { return String.fromCharCode(65 + i); }
 
+  function encPath(p) {
+    // Encode each path segment separately so real slashes stay intact
+    // while spaces and other special characters in filenames are escaped.
+    return p.split("/").map(encodeURIComponent).join("/");
+  }
+
   function renderExplanationMedia(media, label) {
-    if (!media || media.type === "none" || !media.ref) return "";
+    if (!media || media.type === "none" || !media.path) return "";
+    const src = encPath(media.path);
     if (media.type === "image") {
-      return `<div class="quiz-media-wrap image"><img src="images/${media.ref}.png" alt="${label}"></div>`;
+      return `<div class="quiz-media-wrap image"><img src="${src}" alt="${label}"></div>`;
     }
     if (media.type === "video") {
-      return `<div class="quiz-media-wrap"><video controls preload="metadata" poster="posters/${media.ref}.jpg" src="videos/${media.ref}.mp4"></video></div>`;
+      return `<div class="quiz-media-wrap"><video controls preload="metadata" src="${src}"></video></div>`;
     }
     if (media.type === "gdrive") {
       return `<div class="quiz-media-wrap"><iframe src="https://drive.google.com/file/d/${media.ref}/preview" title="${label}" loading="lazy" allow="autoplay"></iframe></div>`;
@@ -298,24 +305,26 @@ function buildQuiz(section) {
   // to a single, uninterruptible playback — no native controls, no seeking,
   // and once it ends (or once the question is left) it's gone for good.
   function renderQuestionMedia(qi, media) {
-    if (!media || media.type === "none" || !media.ref) return "";
+    if (!media || media.type === "none" || !media.path) return "";
+    const src = encPath(media.path);
+    const poster = media.poster ? encPath(media.poster) : "";
     if (media.type === "image") {
-      return `<div class="quiz-media-wrap image"><img src="images/${media.ref}.png" alt="Question visual"></div>`;
+      return `<div class="quiz-media-wrap image"><img src="${src}" alt="Question visual"></div>`;
     }
     if (media.type === "gdrive") {
       return `<div class="quiz-media-wrap"><iframe src="https://drive.google.com/file/d/${media.ref}/preview" title="Question video" loading="lazy" allow="autoplay"></iframe></div>`;
     }
     if (media.type === "video") {
       if (p.quizMode !== "advanced") {
-        return `<div class="quiz-media-wrap"><video controls preload="metadata" poster="posters/${media.ref}.jpg" src="videos/${media.ref}.mp4"></video></div>`;
+        return `<div class="quiz-media-wrap"><video controls preload="metadata"${poster ? ` poster="${poster}"` : ""} src="${src}"></video></div>`;
       }
       if (p.videoConsumed[qi]) {
         return `<div class="quiz-media-wrap video-consumed"><div class="quiz-video-consumed-msg">🔒 Video already played — advanced mode allows one viewing per question.</div></div>`;
       }
       return `
         <div class="quiz-media-wrap video-once">
-          <video preload="metadata" poster="posters/${media.ref}.jpg" playsinline></video>
-          <button type="button" class="quiz-play-once-btn" data-play-ref="${media.ref}" data-qi="${qi}">&#9658; Play Video (one time only)</button>
+          <video preload="metadata"${poster ? ` poster="${poster}"` : ""} playsinline></video>
+          <button type="button" class="quiz-play-once-btn" data-play-src="${src}" data-qi="${qi}">&#9658; Play Video (one time only)</button>
         </div>`;
     }
     return "";
@@ -326,11 +335,16 @@ function buildQuiz(section) {
       btn.addEventListener("click", () => {
         const wrap = btn.closest(".video-once");
         const video = wrap.querySelector("video");
-        const ref = btn.getAttribute("data-play-ref");
+        const src = btn.getAttribute("data-play-src");
         const qi = parseInt(btn.getAttribute("data-qi"), 10);
-        video.src = `videos/${ref}.mp4`;
+        video.src = src;
         btn.remove();
-        video.play();
+        video.addEventListener("error", () => {
+          wrap.innerHTML = `<div class="quiz-video-error">⚠️ Couldn't load this video. Check that <code>${src}</code> exists in the repo with that exact filename (GitHub Pages is case-sensitive).</div>`;
+        });
+        video.play().catch(() => {
+          wrap.innerHTML = `<div class="quiz-video-error">⚠️ Couldn't load this video. Check that <code>${src}</code> exists in the repo with that exact filename (GitHub Pages is case-sensitive).</div>`;
+        });
         if (onEnded) onEnded();
         video.addEventListener("ended", () => {
           p.videoConsumed[qi] = true;
@@ -352,7 +366,7 @@ function buildQuiz(section) {
             <li>No time limit — think it through at your own pace</li>
             <li>Jump between questions freely, change any answer before final submission</li>
             <li>Rewatch videos as many times as you like</li>
-            <li>Only retake missed questions on subsequent attempts</li>
+            <li>Unlimited retakes until you pass</li>
           </ul>
           <button type="button" class="btn btn-primary" data-choose-mode="beginner">Choose Beginner</button>
         </div>
@@ -420,6 +434,7 @@ function buildQuiz(section) {
 
     const chosen = p.quizAnswers[qi];
     const resultKnown = attempted && p.quizResult[qi] !== undefined;
+    const locked = attempted && p.quizResult[qi] === true;
 
     const choicesHTML = item.choices.map((choice, oi) => {
       let cls = "quiz-choice";
@@ -428,8 +443,9 @@ function buildQuiz(section) {
         if (item.correct.includes(oi)) cls += " correct";
         else if (chosen === oi) cls += " incorrect";
       }
+      if (locked) cls += " locked";
       return `
-        <button type="button" class="${cls}" data-oi="${oi}">
+        <button type="button" class="${cls}" data-oi="${oi}" ${locked ? "disabled" : ""}>
           <span class="quiz-choice-letter">${letterFor(oi)}</span>
           <span class="quiz-choice-text">${choice}</span>
         </button>`;
@@ -442,7 +458,7 @@ function buildQuiz(section) {
       bannerHTML = `
         <div class="quiz-summary fail" style="margin-bottom:1rem;">
           You scored ${correctCount} / ${total} (${percent}%). You need ${QUIZ_PASS_PERCENT}%+ to pass.
-          Green choices below are correct — red is what you picked. Fix the red ones and resubmit.
+          Correct answers are locked in green — fix the red ones and resubmit.
         </div>`;
     }
 
@@ -455,6 +471,7 @@ function buildQuiz(section) {
           <div class="quiz-game-kicker">Question ${qi + 1} of ${total}</div>
           ${renderQuestionMedia(qi, item.media)}
           <p class="quiz-question-text">${item.question}</p>
+          ${locked ? `<p class="quiz-locked-note">✓ Answered correctly — locked in.</p>` : ""}
           <div class="quiz-choices">${choicesHTML}</div>
         </div>
         <div class="quiz-nav-bar">
@@ -467,13 +484,15 @@ function buildQuiz(section) {
       </div>
     `;
 
-    container.querySelectorAll(".quiz-choice").forEach(btn => {
-      btn.addEventListener("click", () => {
-        p.quizAnswers[qi] = parseInt(btn.getAttribute("data-oi"), 10);
-        saveState();
-        renderBeginnerPlaying();
+    if (!locked) {
+      container.querySelectorAll(".quiz-choice").forEach(btn => {
+        btn.addEventListener("click", () => {
+          p.quizAnswers[qi] = parseInt(btn.getAttribute("data-oi"), 10);
+          saveState();
+          renderBeginnerPlaying();
+        });
       });
-    });
+    }
     container.querySelectorAll("[data-jump]").forEach(btn => {
       btn.addEventListener("click", () => {
         p.currentQuestionIndex = parseInt(btn.getAttribute("data-jump"), 10);
@@ -593,7 +612,13 @@ function buildQuiz(section) {
       btn.addEventListener("click", () => {
         p.quizAnswers[qi] = parseInt(btn.getAttribute("data-oi"), 10);
         saveState();
-        renderAdvancedPlaying();
+        // Update the selection in place -- do NOT re-render the question here,
+        // since that would tear down and restart the running timer (and any
+        // in-progress one-time video) every time an answer is clicked.
+        container.querySelectorAll(".quiz-choice").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        const nextBtnNow = document.getElementById("quiz-adv-next-btn");
+        if (nextBtnNow) nextBtnNow.disabled = false;
       });
     });
 
