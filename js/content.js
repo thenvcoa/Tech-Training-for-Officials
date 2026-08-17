@@ -567,17 +567,17 @@ const SECTION_6 = {
       </div>
     </div>
 
-    <figure class="frame" style="margin:0 auto;max-width:820px;">
-      <img src="images/av_jewelry_panel.png" alt="Jewelry appearance violations — rule 2.1.1 guide with legal and illegal examples">
-    </figure>
+    <div class="card" style="padding:.6rem;">
+      <img src="images/av_jewelry_panel.png" alt="Jewelry appearance violations — rule 2.1.1 guide with legal and illegal examples" style="border-radius:10px;">
+    </div>
 
-    <figure class="frame" style="margin:0 auto;max-width:820px;">
-      <img src="images/av_shoes_panel.png" alt="Beads, ribbons, bands, and charms on shoes — legal and potentially illegal examples">
-    </figure>
+    <div class="card" style="padding:.6rem;">
+      <img src="images/av_shoes_panel.png" alt="Beads, ribbons, bands, and charms on shoes — legal and potentially illegal examples" style="border-radius:10px;">
+    </div>
 
-    <figure class="frame" style="margin:0 auto;max-width:820px;">
-      <img src="images/av_memorial_panel.png" alt="Memorial ribbons pinned to uniform — rule guide with examples">
-    </figure>
+    <div class="card" style="padding:.6rem;">
+      <img src="images/av_memorial_panel.png" alt="Memorial ribbons pinned to uniform — rule guide with examples" style="border-radius:10px;">
+    </div>
   `
 };
 
