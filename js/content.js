@@ -561,9 +561,9 @@ const SECTION_6 = {
         <p style="margin:0;">When looking at the fingers from the palm side of the hand, nails
         should not extend noticeably beyond the tips of the fingers.</p>
       </div>
-      <div class="img-row compact" style="justify-content:center;">
-        <img src="images/av_nails_safety_chart.png" alt="Finger nail safety rules chart — legal vs. not legal examples">
-        <img class="fade-edges" src="images/av_nails_rule.jpg" alt="Rule 1.1.4 text">
+      <div style="display:flex;flex-direction:column;gap:1rem;align-items:center;margin-top:.4rem;">
+        <img src="images/av_nails_safety_chart.png" alt="Finger nail safety rules chart — legal vs. not legal examples" style="width:100%;max-width:640px;border-radius:12px;box-shadow:var(--shadow);">
+        <img class="fade-edges" src="images/av_nails_rule.jpg" alt="Rule 1.1.4 text" style="width:100%;max-width:480px;">
       </div>
     </div>
 
