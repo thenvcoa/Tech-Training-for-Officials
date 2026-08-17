@@ -272,6 +272,9 @@ figure.frame figcaption{font-size:.82rem;color:var(--text-soft);margin-top:.4rem
 .quiz-choice-text{flex:1;line-height:1.4;}
 .quiz-choice.review{cursor:default;}
 .quiz-choice.review:hover{transform:none;}
+.quiz-choice.locked{cursor:not-allowed;opacity:.85;}
+.quiz-choice.locked:hover{transform:none;border-color:var(--green);}
+.quiz-locked-note{color:var(--green);font-size:.85rem;font-weight:700;margin:-.6rem 0 .8rem;}
 
 .quiz-media-wrap{
   position:relative;width:100%;padding-top:56.25%;border-radius:12px;overflow:hidden;
@@ -300,6 +303,11 @@ figure.frame figcaption{font-size:.82rem;color:var(--text-soft);margin-top:.4rem
   display:flex;align-items:center;justify-content:center;text-align:center;
 }
 .quiz-video-consumed-msg{color:var(--text-soft);font-size:.9rem;font-weight:600;}
+.quiz-video-error{
+  background:var(--red-bg);color:var(--red);border-radius:12px;padding:1.4rem 1rem;
+  text-align:center;font-size:.88rem;font-weight:600;line-height:1.5;
+}
+.quiz-video-error code{background:rgba(180,42,34,.1);padding:.1rem .35rem;border-radius:4px;}
 
 .quiz-mode-badge{
   display:inline-block;font-family:'Poppins',sans-serif;font-weight:700;font-size:.82rem;
