@@ -65,7 +65,7 @@ const TRAINING_SECTIONS = [
       <p>A one-page quick reference of the most common deductions, rule numbers, and explanations —
       worth printing or saving to your phone for comp day.</p>
       <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:.6rem;">
-        <a class="btn btn-primary" style="text-decoration:none;display:inline-block;" href="files/vhsl-tech-cheat-sheet.pdf" target="_blank" rel="noopener">⬇ Download PDF</a>
+        <a class="btn btn-primary" style="text-decoration:none;display:inline-block;" href="files/2026-27%20VHSL%20Cheer%20Tech%20Cheat%20Sheet.pdf" target="_blank" rel="noopener">⬇ Download PDF</a>
         <a class="btn btn-secondary" style="text-decoration:none;display:inline-block;color:var(--navy);background:var(--bg);border:1.5px solid var(--line);" href="https://drive.google.com/file/d/1MZdvWdNuh2MO-lwx8wfS6eYAThRxuUZ-/view?usp=drive_link" target="_blank" rel="noopener">Open in Google Drive</a>
       </div>
     </div>
@@ -411,10 +411,10 @@ const SECTION_4 = {
       </div>
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s24_hand_to_foot_interpretation_change.jpg" data-video-id="v15"><source src="videos/s24_hand_to_foot_interpretation_change.mp4" type="video/mp4"></video></div>
-        <div class="video-label">Interpretation Change — Legal <span class="watch-check" data-watch-for="v15"><span class="dot"></span>Not watched</span></div>
+        <div class="video-label">Interpretation Change — Legal* <span class="watch-check" data-watch-for="v15"><span class="dot"></span>Not watched</span></div>
       </div>
     </div>
-    <p style="color:var(--text-soft);font-size:.9rem;">This interpretation changed from NFHS/USA Cheer's original decision: the bracer may drop to a
+    <p style="color:var(--text-soft);font-size:.9rem;">* This interpretation changed from NFHS/USA Cheer's original decision: the bracer may drop to a
     loading position for a better line with the top, just like other braced flips.</p>
 
     <div class="card">

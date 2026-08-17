@@ -174,9 +174,16 @@ figure.frame figcaption{font-size:.82rem;color:var(--text-soft);margin-top:.4rem
 
 .img-row{display:flex;gap:.9rem;flex-wrap:wrap;margin:0 auto 1rem;justify-content:center;}
 .img-row img{border-radius:10px;box-shadow:var(--shadow);flex:1 1 140px;max-width:220px;}
+.img-row.compact img{flex:1 1 100px;max-width:150px;}
+
+.fade-edges{
+  -webkit-mask-image:radial-gradient(ellipse 80% 80% at center, black 55%, transparent 100%);
+  mask-image:radial-gradient(ellipse 80% 80% at center, black 55%, transparent 100%);
+}
 
 /* ---------- Video ---------- */
 .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:0 auto 1.2rem;justify-content:center;}
+.video-grid.single{grid-template-columns:1fr;}
 @media (max-width:720px){.video-grid{grid-template-columns:1fr;}}
 .video-card{background:var(--white);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;}
 .video-card .video-wrap{position:relative;background:#000;}
