@@ -411,10 +411,10 @@ const SECTION_4 = {
       </div>
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s24_hand_to_foot_interpretation_change.jpg" data-video-id="v15"><source src="videos/s24_hand_to_foot_interpretation_change.mp4" type="video/mp4"></video></div>
-        <div class="video-label">Interpretation Change — Legal* <span class="watch-check" data-watch-for="v15"><span class="dot"></span>Not watched</span></div>
+        <div class="video-label">Interpretation Change — Legal <span class="watch-check" data-watch-for="v15"><span class="dot"></span>Not watched</span></div>
       </div>
     </div>
-    <p style="color:var(--text-soft);font-size:.9rem;">* This interpretation changed from NFHS/USA Cheer's original decision: the bracer may drop to a
+    <p style="color:var(--text-soft);font-size:.9rem;">This interpretation changed from NFHS/USA Cheer's original decision: the bracer may drop to a
     loading position for a better line with the top, just like other braced flips.</p>
 
     <div class="card">
@@ -511,7 +511,7 @@ const SECTION_6 = {
   navLabel: "Appearance Violations",
   kicker: "Section 4",
   title: "Appearance Violations",
-  subtitle: "Hair, jewelry, and accessory rulings",
+  subtitle: "Hair, nails, jewelry, and accessory rulings",
   minSeconds: 75,
   videos: [],
   bodyHTML: `
@@ -527,7 +527,10 @@ const SECTION_6 = {
           <li>An athlete's hand lands on it during a back handspring — no additional deduction.</li>
           <li>A base unintentionally stands on it while holding a stunt — no additional deduction.</li>
         </ul>
-      <figure class="frame" style="margin:0 auto;"><img class="fade-edges" src="images/slide34_img1.jpg" alt="Hair bow example"></figure>
+        <div class="img-row compact" style="justify-content:center;">
+          <img class="fade-edges" src="images/slide34_img1.jpg" alt="Hair bow example">
+          <img class="fade-edges" src="images/av_hairbows_rule.jpg" alt="Rule 1.1.5 text">
+        </div>
     </div>
 
     <h3>Long Hair / Ponytails</h3>
@@ -540,37 +543,41 @@ const SECTION_6 = {
         <tr><td><span class="pill illegal">1-PT DEDUCTION</span></td><td>Long hair is landed on during an inverted skill (e.g., back walkover) — safety risk.</td></tr>
         <tr><td><span class="pill illegal">1-PT DEDUCTION</span></td><td>A flyer's hair hits the backspot's face or obstructs their view coming into a cradle - safety risk.</td></tr>
       </table>
-    <div class="img-row" style="justify-content:center;">
-      <img class="fade-edges" src="images/slide35_img1.jpg" alt="Hair example 1">
-      <img class="fade-edges" src="images/slide35_img2.jpg" alt="Hair example 2">
-      <img class="fade-edges" src="images/slide35_img3.jpg" alt="Hair example 3">
+    <div class="img-row compact" style="justify-content:center;">
+      <img class="fade-edges" src="images/av_longhair_situations1.jpg" alt="Rule 1.1.5 situations, part 1">
+      <img class="fade-edges" src="images/av_longhair_situations2.jpg" alt="Rule 1.1.5 situations, part 2">
      </div>
     </div>
 
-    <h3>Beads / Ribbons / Bands / Charms on Shoes</h3>
+    <h3>Long Nails</h3>
     <div class="card">
-      <span class="pill legal">LEGAL</span>
-      <p>Beads/ribbons attached directly to the shoes do not meet the definition of jewelry, since
-      they aren't worn on the "body." These accessories should still be worn so they don't create
-      a safety risk (e.g., a base's hands becoming tangled in shoe charms while holding a stunt).</p>
-      <p class="rule-tag">Rule 2 Definitions</p>
+      <p>Rule 1.1.4 states nails should be kept <strong>short and near the edges of the
+      fingertips</strong>. The rule does not mention nail polish, color, shape, or design, and does
+      not prohibit fake or acrylic nails as long as they meet the short/near-the-edge requirement.
+      As a general guideline, nails should be manicured so they don't create a safety risk (e.g.,
+      scratching another athlete).</p>
+      <div class="card tinted">
+        <p class="rule-tag">How is legality determined?</p>
+        <p style="margin:0;">When looking at the fingers from the palm side of the hand, nails
+        should not extend noticeably beyond the tips of the fingers.</p>
+      </div>
       <div class="img-row compact" style="justify-content:center;">
-        <img src="images/slide36_img3.png" alt="Shoe accessory example 3">
-        <img src="images/slide36_img5.png" alt="Shoe accessory example 5">
-        <img src="images/slide36_img6.png" alt="Shoe accessory example 6">
-        <img src="images/slide36_img7.png" alt="Shoe accessory example 7">
+        <img src="images/av_nails_safety_chart.png" alt="Finger nail safety rules chart — legal vs. not legal examples">
+        <img class="fade-edges" src="images/av_nails_rule.jpg" alt="Rule 1.1.4 text">
       </div>
     </div>
 
-    <h3>Memorial Ribbons Pinned to Uniform</h3>
-      <div class="card">
-        <span class="pill legal">LEGAL</span>
-        <p>Rule 2.1.20 allows state associations to permit special-occasion, commemorative, or
-        memorial patches not to exceed 4 square inches. The VHSL Rule Interpreter and State
-        Director agree these ribbons are permissible. Coaches should notify their
-        Commissioner/Meet Referee if their team plans to wear one.</p>
-      <figure class="frame" style="margin:0 auto;"><img src="images/slide37_img1.png" alt="Memorial ribbon example"></figure>
-    </div>
+    <figure class="frame" style="margin:0 auto;max-width:820px;">
+      <img src="images/av_jewelry_panel.png" alt="Jewelry appearance violations — rule 2.1.1 guide with legal and illegal examples">
+    </figure>
+
+    <figure class="frame" style="margin:0 auto;max-width:820px;">
+      <img src="images/av_shoes_panel.png" alt="Beads, ribbons, bands, and charms on shoes — legal and potentially illegal examples">
+    </figure>
+
+    <figure class="frame" style="margin:0 auto;max-width:820px;">
+      <img src="images/av_memorial_panel.png" alt="Memorial ribbons pinned to uniform — rule guide with examples">
+    </figure>
   `
 };
 
