@@ -941,11 +941,11 @@ const QUIZ_DATA = [
     "correct": [
       2
     ],
-    "timeLimit": 45,
+    "timeLimit": 90,
     "explanation": "",
     "explanationMedia": {
       "type": "video",
-      "path": "videos/Q13 Answer.mov"
+      "path": "videos/q13_answer.mp4"
     }
   },
   {
