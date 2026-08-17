@@ -65,7 +65,7 @@ const TRAINING_SECTIONS = [
       <p>A one-page quick reference of the most common deductions, rule numbers, and explanations —
       worth printing or saving to your phone for comp day.</p>
       <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:.6rem;">
-        <a class="btn btn-primary" style="text-decoration:none;display:inline-block;" href="files/vhsl-tech-cheat-sheet.pdf" target="_blank" rel="noopener">⬇ Download PDF</a>
+        <a class="btn btn-primary" style="text-decoration:none;display:inline-block;" href="files/2026-27%20VHSL%20Cheer%20Tech%20Cheat%20Sheet.pdf" target="_blank" rel="noopener">⬇ Download PDF</a>
         <a class="btn btn-secondary" style="text-decoration:none;display:inline-block;color:var(--navy);background:var(--bg);border:1.5px solid var(--line);" href="https://drive.google.com/file/d/1MZdvWdNuh2MO-lwx8wfS6eYAThRxuUZ-/view?usp=drive_link" target="_blank" rel="noopener">Open in Google Drive</a>
       </div>
     </div>
