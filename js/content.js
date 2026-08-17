@@ -58,6 +58,18 @@ const TRAINING_SECTIONS = [
         <li>Coach's signature is still required.</li>
       </ul>
     </div>
+
+    <div class="card" style="text-align:center;">
+      <span class="pill gold">HANDY REFERENCE</span>
+      <h4 style="margin-top:.2rem;">VHSL Cheer Technical Official Cheat Sheet</h4>
+      <p>A one-page quick reference of the most common deductions, rule numbers, and explanations —
+      worth printing or saving to your phone for comp day.</p>
+      <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:.6rem;">
+        <a class="btn btn-primary" style="text-decoration:none;display:inline-block;" href="files/vhsl-tech-cheat-sheet.pdf" target="_blank" rel="noopener">⬇ Download PDF</a>
+        <a class="btn btn-secondary" style="text-decoration:none;display:inline-block;color:var(--navy);background:var(--bg);border:1.5px solid var(--line);" href="https://drive.google.com/file/d/1MZdvWdNuh2MO-lwx8wfS6eYAThRxuUZ-/view?usp=drive_link" target="_blank" rel="noopener">Open in Google Drive</a>
+      </div>
+    </div>
+
     <figure class="frame" style="max-width:420px;margin:0 auto 1.2rem;">
       <figcaption>2026 VHSL Technical Score Sheet</figcaption>      
     <img src="images/slide02_img1.png" alt="2026 VHSL Competitive Cheer Technical Score Sheet">
@@ -161,7 +173,7 @@ const TRAINING_SECTIONS = [
         <li><strong style="color:#7A1FA2;">Performance errors → Illegal execution</strong></li>
       </ul>
     </div>
-    <div class="video-grid" style="max-width:420px;justify-content:center;margin:0 auto;">
+    <div class="video-grid single">
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/illegal_skills_vs_performance_errors.jpg" data-video-id="v22"><source src="videos/illegal_skills_vs_performance_errors.mp4" type="video/mp4"></video></div>
         <div class="video-label">Illegal Skills vs. Performance Errors <span class="watch-check" data-watch-for="v22"><span class="dot"></span>Not watched</span></div>
@@ -177,7 +189,7 @@ const TRAINING_SECTIONS = [
       <p style="text-align:center;"><strong style="color:var(--red);">How many athletes do they
       need to legally perform that skill?</strong></p>
     </div>
-    <div class="video-grid" style="max-width:420px;justify-content:center;margin:0 auto;">
+    <div class="video-grid single">
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/anticipating_numbers_braced_flips.jpg" data-video-id="v23"><source src="videos/anticipating_numbers_braced_flips.mp4" type="video/mp4"></video></div>
         <div class="video-label">Examples of Anticipating Numbers: Braced Flips <span class="watch-check" data-watch-for="v23"><span class="dot"></span>Not watched</span></div>
@@ -196,6 +208,11 @@ const TRAINING_SECTIONS = [
   minSeconds: 60,
   videos: [],
   bodyHTML: `
+    <div class="card tinted" style="border-left:4px solid var(--gold);font-size:.88rem;color:var(--text-soft);">
+      <p style="margin:0;"><strong>Source:</strong> The content on this page and the two sections that follow
+      (<em>Definitions &amp; Braced Flips</em> and <em>Release &amp; Dismount Rules</em>) was provided by
+      <strong>Varsity</strong>, prepared by <strong>Bill Ahern</strong>, VHSL Rules Interpreter.</p>
+    </div>
     <div class="img-row" style="justify-content:center;">
       <img src="images/slide07_img1.png" alt="New rules for 2026-2027 graphic">
       <img src="images/slide08_img1.png" alt="NFHS USA Cheer Spirit Rules book cover">
@@ -405,12 +422,15 @@ const SECTION_4 = {
       <p>Hand-to-foot connection with an Arabian entry into the flip is <strong>not allowed</strong> —
       no spinning of any amount is permitted by the top on a hand-to-foot connection.</p>
     </div>
-    <div class="video-grid" style="max-width:420px;justify-content:center;margin:0 auto;">
+    <div class="video-grid single">
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s25_hand_to_foot_arabian_entry.jpg" data-video-id="v16"><source src="videos/s25_hand_to_foot_arabian_entry.mp4" type="video/mp4"></video></div>
         <div class="video-label">Arabian Entry — Illegal <span class="watch-check" data-watch-for="v16"><span class="dot"></span>Not watched</span></div>
       </div>
     </div>
+    <p style="font-size:.78rem;color:var(--text-soft);border-top:1px solid var(--line);padding-top:.8rem;margin-top:1.5rem;">
+      ¹ Content on this page was provided by Varsity, prepared by Bill Ahern, VHSL Rules Interpreter.
+    </p>
     `
 };
 
@@ -437,7 +457,7 @@ const SECTION_5 = {
       a 2.5 pyramid, since the bracer would be supporting the top's full weight while not being a
       legal (grounded) base.</p>
     </div>
-    <div class="video-grid" style="max-width:420px;justify-content:center;margin:0 auto;">
+    <div class="video-grid single">
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s28_release_top_over_torso.jpg" data-video-id="v17"><source src="videos/s28_release_top_over_torso.mp4" type="video/mp4"></video></div>
         <div class="video-label">Top Over Torso — Illegal <span class="watch-check" data-watch-for="v17"><span class="dot"></span>Not watched</span></div>
@@ -480,6 +500,9 @@ const SECTION_5 = {
     </div>
     <p style="color:var(--text-soft);font-size:.9rem;">Remember: if the visual starts from below shoulder level with bases under the feet, that's a
     toss — and would NOT be legal.</p>
+    <p style="font-size:.78rem;color:var(--text-soft);border-top:1px solid var(--line);padding-top:.8rem;margin-top:1.5rem;">
+      ¹ Content on this page was provided by Varsity, prepared by Bill Ahern, VHSL Rules Interpreter.
+    </p>
   `
 };
 
@@ -504,7 +527,7 @@ const SECTION_6 = {
           <li>An athlete's hand lands on it during a back handspring — no additional deduction.</li>
           <li>A base unintentionally stands on it while holding a stunt — no additional deduction.</li>
         </ul>
-      <figure class="frame" style="margin:0 auto;"><img src="images/slide34_img1.jpg" alt="Hair bow example"></figure>
+      <figure class="frame" style="margin:0 auto;"><img class="fade-edges" src="images/slide34_img1.jpg" alt="Hair bow example"></figure>
     </div>
 
     <h3>Long Hair / Ponytails</h3>
@@ -518,9 +541,9 @@ const SECTION_6 = {
         <tr><td><span class="pill illegal">1-PT DEDUCTION</span></td><td>A flyer's hair hits the backspot's face or obstructs their view coming into a cradle - safety risk.</td></tr>
       </table>
     <div class="img-row" style="justify-content:center;">
-      <img src="images/slide35_img1.jpg" alt="Hair example 1">
-      <img src="images/slide35_img2.jpg" alt="Hair example 2">
-      <img src="images/slide35_img3.jpg" alt="Hair example 3">
+      <img class="fade-edges" src="images/slide35_img1.jpg" alt="Hair example 1">
+      <img class="fade-edges" src="images/slide35_img2.jpg" alt="Hair example 2">
+      <img class="fade-edges" src="images/slide35_img3.jpg" alt="Hair example 3">
      </div>
     </div>
 
@@ -531,7 +554,7 @@ const SECTION_6 = {
       they aren't worn on the "body." These accessories should still be worn so they don't create
       a safety risk (e.g., a base's hands becoming tangled in shoe charms while holding a stunt).</p>
       <p class="rule-tag">Rule 2 Definitions</p>
-      <div class="img-row" style="justify-content:center;">
+      <div class="img-row compact" style="justify-content:center;">
         <img src="images/slide36_img3.png" alt="Shoe accessory example 3">
         <img src="images/slide36_img5.png" alt="Shoe accessory example 5">
         <img src="images/slide36_img6.png" alt="Shoe accessory example 6">
@@ -941,11 +964,11 @@ const QUIZ_DATA = [
     "correct": [
       2
     ],
-    "timeLimit": 45,
+    "timeLimit": 90,
     "explanation": "",
     "explanationMedia": {
       "type": "video",
-      "path": "videos/Q13 Answer.mov"
+      "path": "videos/q13_answer.mp4"
     }
   },
   {
