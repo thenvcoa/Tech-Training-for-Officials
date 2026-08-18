@@ -13,7 +13,7 @@ const TRAINING_SECTIONS = [
   kicker: "Start Here",
   title: "2026–2027 VHSL Cheer",
   subtitle: "Technical Officials Training",
-  minSeconds: 30,
+  minSeconds: 20,
   videos: [],
   bodyHTML: `
     <div style="text-align:center;margin-bottom:1.4rem;">
@@ -48,7 +48,7 @@ const TRAINING_SECTIONS = [
   kicker: "Section 1",
   title: "2026 Tech Scoresheet",
   subtitle: "<strong>No major changes</strong> — just a few wording and formatting updates",
-  minSeconds: 60,
+  minSeconds: 45,
   videos: [],
   bodyHTML: `
     <div class="card tinted">
@@ -513,7 +513,7 @@ const SECTION_6 = {
   kicker: "Section 4",
   title: "Appearance Violations",
   subtitle: "Hair, nails, jewelry, and accessory rulings",
-  minSeconds: 75,
+  minSeconds: 60,
   videos: [],
   bodyHTML: `
    
@@ -560,7 +560,7 @@ const SECTION_7 = {
   kicker: "Section 5",
   title: "Tips, Resources & Contacts",
   subtitle: "Comp-day guidance and who to reach out to",
-  minSeconds: 75,
+  minSeconds: 45,
   videos: [],
   bodyHTML: `
     <h3>Tech Tips for Success</h3>
@@ -645,7 +645,7 @@ const QUIZ_DATA = [
     "correct": [
       4
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Rule 2.7.8 requires all of the requirements to be met when dismounting to catchers who are not the original bases. Additionally, the new catchers must remain close to the original bases and the top person must be cradled by two cacthers + a head/shoulder spotter.",
     "explanationMedia": {
       "type": "none",
@@ -670,7 +670,7 @@ const QUIZ_DATA = [
     "correct": [
       3
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Rule 2.5.6 only allows up to 1 full twist when releasing from extended to extended.",
     "explanationMedia": {
       "type": "none",
@@ -693,7 +693,7 @@ const QUIZ_DATA = [
     "correct": [
       0
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Legal [Rule 2.2.1c] – Since the spotter is not required for this skill, handing this person a sign simply makes this a double based prep without a spotter, which is legal.",
     "explanationMedia": {
       "type": "none",
@@ -720,7 +720,7 @@ const QUIZ_DATA = [
     "correct": [
       5
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Rule 2.3.5d allows all of these scenarios to occur while the bracer releases the top person or moves to a load position",
     "explanationMedia": {
       "type": "none",
@@ -746,7 +746,7 @@ const QUIZ_DATA = [
     "correct": [
       3
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Rule 2.2.2b allows an athlete to hold soft props during tumbling skills in which hand(s) are not being used for support.",
     "explanationMedia": {
       "type": "image",
@@ -769,7 +769,7 @@ const QUIZ_DATA = [
     "correct": [
       1
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "NOT Legal [Rule 2.2.1c] - Since this is a required spotter, they cannot take the sign. The top would need to pop down with the sign or hand it to someone else on the ground.",
     "explanationMedia": {
       "type": "none",
@@ -794,7 +794,7 @@ const QUIZ_DATA = [
     "correct": [
       3
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "New rule 2.3.5k requires all of the conditions be met for hand-to-foot only connections in a braced flip.",
     "explanationMedia": {
       "type": "none",
@@ -836,17 +836,17 @@ const QUIZ_DATA = [
     },
     "question": "Which of the following is a top person NOT allowed to perform in a braced flip with hand-to-hand/arm connection?",
     "choices": [
-      "A 1/4 twist",
-      "A 1/4 flipping rotation",
-      "A full twist",
+      "1/4 twist",
+      "1/4 flipping rotation",
+      "One full twist",
       "One full flipping rotation",
-      "A 1 1/4 twist",
-      "A 1 1/4 flipping rotation"
+      "1 1/4 twist",
+      "1 1/4 flipping rotation"
     ],
     "correct": [
       4
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Under Rule 2.3.5h, in braced flips, the top person may not perform more than one and a quarter (1 1/4) flipping rotations and no more than one complete twist.",
     "explanationMedia": {
       "type": "none",
@@ -871,7 +871,7 @@ const QUIZ_DATA = [
     "correct": [
       0
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Tumbling definition: Any hip-over-head skill that is not supported by a base that begins and ends on the performing surface.",
     "explanationMedia": {
       "type": "none",
@@ -896,7 +896,7 @@ const QUIZ_DATA = [
     "correct": [
       2
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "(A) is double-base stunt/lift with no spotter required. The spotter in (B) is visually focused and in the proper position with the appropriate body position to help minimize risk to the top person. Both stunts are legal per Rule 2.2.5.",
     "explanationMedia": {
       "type": "none",
@@ -921,7 +921,7 @@ const QUIZ_DATA = [
     "correct": [
       3
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Rule 2.3.9 states that the top person in a partner stunt, pyramid or transition may not leave the floor unassisted with the intent to land or be caught in an inverted body position.",
     "explanationMedia": {
       "type": "none",
@@ -969,7 +969,7 @@ const QUIZ_DATA = [
     "correct": [
       1
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "While there is no longer a requirement for upper body contact during an inversion, Rule 2.3.6c states that the top person cannot be released and land in an inverted position. This skill either needs to be caught non-inverted or maintain contact with a base/spotter throughout to be legal.",
     "explanationMedia": {
       "type": "none",
@@ -992,7 +992,7 @@ const QUIZ_DATA = [
     "correct": [
       0
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Legal [Rule 2.3.4] - While this may look like a braced flip, which would also be legal with this setup, it is technically a braced roll. That is because a base or spotter (in this case, a base) has a hand on the shoulder of the top person. With this setup, the top person is not released from the people on the ground until their hips are above their head, making it an inversion that releases. If there were no one in contact with the shoulder, then the release would happen prior to the hips being over the head, making it a flip.",
     "explanationMedia": {
       "type": "none",
@@ -1017,7 +1017,7 @@ const QUIZ_DATA = [
     "correct": [
       0
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "NOT Legal [Rule 2.3.6c2] - Foldover stunts must initiate from prep level or below. It can drive through an extended position, but it cannot stop or pause in the extended position. The forward foldover should be a continuous movement through the drive upward.",
     "explanationMedia": {
       "type": "none",
@@ -1043,7 +1043,7 @@ const QUIZ_DATA = [
     "correct": [
       2
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Rule 2.5.5 does not require braced releases transitions to be caught by original bases or be caught in a cradle. However, 2.5.5b specifies that bracers must be at prep level or below (i.e. extended stunts cannot serve as bracers for release transitions).",
     "explanationMedia": {
       "type": "none",
@@ -1067,7 +1067,7 @@ const QUIZ_DATA = [
     "correct": [
       1
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "NOT Legal [Rule 2.2.10] - The athletes seat rolling under the lifts violate Rule 2.2.10 which states athletes must not move under stunts unless they are involved in building/stabilizing/dismounting the stunt.",
     "explanationMedia": {
       "type": "none",
@@ -1092,7 +1092,7 @@ const QUIZ_DATA = [
     "correct": [
       3
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Nugget definition: A tucked position, bent at the hips and knees with the torso and head drawn toward the knees. The emphasis is that the head needs to be DOWN.",
     "explanationMedia": {
       "type": "none",
@@ -1117,7 +1117,7 @@ const QUIZ_DATA = [
     "correct": [
       2
     ],
-    "timeLimit": 30,
+    "timeLimit": 40,
     "explanation": "Rule 2.3.7 prohibits inverted top person's from holding objects in their hands with the exception of moving from inverted on the floor to non-inverted in a stunt, during a forward roll dismount from a prone position below prep, a partner cartwheel, or an assisted walkover.The sign and poms are both allowed because the top person is moving into a non-inverted stunt.",
     "explanationMedia": {
       "type": "none",
