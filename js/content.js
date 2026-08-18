@@ -575,8 +575,8 @@ const SECTION_7 = {
         <li>Always refer coaches with lingering questions to their commissioner via email the day after the event.</li>
       </ol>
       <p><strong>Most importantly</strong> — don't be intimidated. We are all human and make
-      mistakes. If a correction or clarification needs to be distributed the commisioners will do so. We are all in this together!</p>
-    <figure class="frame" style="max-width:300px;margin:0 auto;"><img src="images/slide38_img1.jpeg" alt="Team unity"></figure>
+      mistakes. If a correction or clarification needs to be distributed, the commisioners will do so. We are all in this together!</p>
+      <br><figure class="frame" style="max-width:300px;margin:0 auto;"><img src="images/slide38_img1.jpeg" alt="Team unity"></figure>
       </div>
 
     <h3>Resources for Tech Officials</h3>
@@ -587,9 +587,9 @@ const SECTION_7 = {
       <a href="https://usacheer.org/safety/rules" target="_blank" rel="noopener">usacheer.org/safety/rules</a></p>
       <p><strong>VHSL Cheer Resource Center</strong> — a Google Drive with numerous videos of
       stunts, pyramids, and legality rulings. If you need visual representations of the rubric
-      and/or rule changes, this is an excellent resource!</p><br>
+      and/or rule changes, this is an excellent resource!</p>
       <p><a href="https://sites.google.com/view/vhslcheercoachesresourcecenter/home" target="_blank" rel="noopener">sites.google.com/view/vhslcheercoachesresourcecenter/home</a></p>
-      <figure class="frame" style="max-width:220px;margin:0 auto;"><img src="images/slide39_img1.png" alt="VHSL Cheer Resource Center QR code"></figure>
+      <br><figure class="frame" style="max-width:220px;margin:0 auto;"><img src="images/slide39_img1.png" alt="VHSL Cheer Resource Center QR code"></figure>
     </div>
 
     <h3>To Obtain an Official Ruling on the Legality of Skills</h3>
