@@ -161,7 +161,7 @@ const TRAINING_SECTIONS = [
     </div>
 
     <div class="card tinted">
-      <p>This training video discusses examples on the difference between illegal choreography
+      <p>This training video from the USACheer Rules Interpreter Course discusses examples on the difference between illegal choreography
       and illegal execution.</p>
       <ul>
         <li><strong style="color:var(--red);">Illegal skills → Illegal choreography</strong></li>
@@ -179,7 +179,7 @@ const TRAINING_SECTIONS = [
     <div class="card tinted">
       <p><strong>Always count athletes</strong> to quickly map out what skills are legal versus
       illegal.</p>
-      <p>This training video discusses scenarios where a tech official should be able to quickly
+      <p>This training video from the USACheer Rules Interpreter Course discusses scenarios where a tech official should be able to quickly
       determine whether the upcoming skill is legal.</p>
       <p style="text-align:center;"><strong style="color:var(--red);">How many athletes do they
       need to legally perform that skill?</strong></p>
