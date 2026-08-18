@@ -533,10 +533,6 @@ const SECTION_6 = {
           <li>An athlete's hand lands on it during a back handspring — no additional deduction.</li>
           <li>A base unintentionally stands on it while holding a stunt — no additional deduction.</li>
         </ul>
-        <div class="img-row compact" style="justify-content:center;">
-          <img class="fade-edges" src="images/slide34_img1.jpg" alt="Hair bow example">
-          <img class="fade-edges" src="images/av_hairbows_rule.jpg" alt="Rule 1.1.5 text">
-        </div>
     </div>
     
 <br>
@@ -557,10 +553,6 @@ const SECTION_6 = {
         <tr><td><span class="pill illegal">1-PT DEDUCTION</span></td><td>Long hair is landed on during an inverted skill (e.g., back walkover) — safety risk.</td></tr>
         <tr><td><span class="pill illegal">1-PT DEDUCTION</span></td><td>A flyer's hair hits the backspot's face or obstructs their view coming into a cradle - safety risk.</td></tr>
       </table>
-    <div class="img-row compact" style="justify-content:center;">
-      <img class="fade-edges" src="images/av_longhair_situations1.jpg" alt="Rule 1.1.5 situations, part 1">
-      <img class="fade-edges" src="images/av_longhair_situations2.jpg" alt="Rule 1.1.5 situations, part 2">
-     </div>
     </div>
 
 <br>
@@ -585,7 +577,6 @@ const SECTION_6 = {
       </div>
       <div style="display:flex;flex-direction:column;gap:1rem;align-items:center;margin-top:.4rem;">
         <img src="images/av_nails_safety_chart.png" alt="Finger nail safety rules chart — legal vs. not legal examples" style="width:100%;max-width:640px;border-radius:12px;box-shadow:var(--shadow);">
-        <img class="fade-edges" src="images/av_nails_rule.jpg" alt="Rule 1.1.4 text" style="width:100%;max-width:480px;">
       </div>
     </div>
 
