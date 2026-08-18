@@ -521,18 +521,9 @@ const SECTION_6 = {
   minSeconds: 75,
   videos: [],
   bodyHTML: `
-    <h3>Hair Bows Falling on the Mat</h3>
-      <div class="card">
-        <p><strong>The deduction is for the bow falling onto the mat</strong> — NOT for athletes
-        stepping on it. Rule 1.1.5 requires hair accessories to be securely fastened. Once the
-        deduction is applied for the fall, there are no additional deductions for subsequent contact.</p>
-        <span class="pill illegal">1-PT DEDUCTION (ONCE ONLY)</span>
-        <ul>
-          <li>Bow becomes loose and falls out — 1-point deduction.</li>
-          <li>Fallen bow is then stepped on by several athletes — no additional deduction.</li>
-          <li>An athlete's hand lands on it during a back handspring — no additional deduction.</li>
-          <li>A base unintentionally stands on it while holding a stunt — no additional deduction.</li>
-        </ul>
+   
+    <div class="card" style="padding:.6rem;">
+      <img src="images/av_hairbows_panel.png" alt="Hair bows falling on the mat — rule 1.1.5 guide with examples" style="border-radius:10px;width:100%;">
     </div>
     
 <br>
@@ -543,18 +534,9 @@ const SECTION_6 = {
 
 <br>    
 
-    <h3>Long Hair / Ponytails</h3>
-    <div class="card">
-      <p>There's no requirement for hair to be short or pulled up — but Rule 1.1.5 requires that
-      hair/style not interfere with the safe execution of stunting or tumbling.</p>
-      <table class="contacts">
-        <tr><th>Ruling</th><th>Situation</th></tr>
-        <tr><td><span class="pill legal">NO DEDUCTION</span></td><td>A long ponytail hangs past the waist; the athlete does not stunt or tumble.</td></tr>
-        <tr><td><span class="pill illegal">1-PT DEDUCTION</span></td><td>Long hair is landed on during an inverted skill (e.g., back walkover) — safety risk.</td></tr>
-        <tr><td><span class="pill illegal">1-PT DEDUCTION</span></td><td>A flyer's hair hits the backspot's face or obstructs their view coming into a cradle - safety risk.</td></tr>
-      </table>
+    <div class="card" style="padding:.6rem;">
+      <img src="images/av_longhair_panel.png" alt="Long hair and ponytails — rule 1.1.5 guide with examples" style="border-radius:10px;width:100%;">
     </div>
-
 <br>
 
     <div class="card" style="padding:.6rem;">
@@ -563,21 +545,8 @@ const SECTION_6 = {
     
 <br>
 
-    <h3>Long Nails</h3>
-    <div class="card">
-      <p>Rule 1.1.4 states nails should be kept <strong>short and near the edges of the
-      fingertips</strong>. The rule does not mention nail polish, color, shape, or design, and does
-      not prohibit fake or acrylic nails as long as they meet the short/near-the-edge requirement.
-      As a general guideline, nails should be manicured so they don't create a safety risk (e.g.,
-      scratching another athlete).</p>
-      <div class="card tinted">
-        <p class="rule-tag">How is legality determined?</p>
-        <p style="margin:0;">When looking at the fingers from the palm side of the hand, nails
-        should not extend noticeably beyond the tips of the fingers.</p>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:1rem;align-items:center;margin-top:.4rem;">
-        <img src="images/av_nails_safety_chart.png" alt="Finger nail safety rules chart — legal vs. not legal examples" style="width:100%;max-width:640px;border-radius:12px;box-shadow:var(--shadow);">
-      </div>
+    <div class="card" style="padding:.6rem;">
+      <img src="images/av_nails_panel.png" alt="Long nails — rule 1.1.4 guide with finger nail safety chart" style="border-radius:10px;width:100%;">
     </div>
 
 <br>
