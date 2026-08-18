@@ -276,6 +276,8 @@ const TRAINING_SECTIONS = [
 }
 ];
 
+// ---------------- DEFINITIONS & BRACED FLIPS ----------------
+
 const SECTION_4 = {
   id: "braced-flips",
   navLabel: "Definitions & Braced Flips",
@@ -411,10 +413,10 @@ const SECTION_4 = {
       </div>
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s24_hand_to_foot_interpretation_change.jpg" data-video-id="v15"><source src="videos/s24_hand_to_foot_interpretation_change.mp4" type="video/mp4"></video></div>
-        <div class="video-label">Interpretation Change — Legal <span class="watch-check" data-watch-for="v15"><span class="dot"></span>Not watched</span></div>
+        <div class="video-label">Interpretation Change — Legal* <span class="watch-check" data-watch-for="v15"><span class="dot"></span>Not watched</span></div>
       </div>
     </div>
-    <p style="color:var(--text-soft);font-size:.9rem;">This interpretation changed from NFHS/USA Cheer's original decision: the bracer may drop to a
+    <p style="color:var(--text-soft);font-size:.9rem;">* This interpretation changed from NFHS/USA Cheer's original decision: the bracer may drop to a
     loading position for a better line with the top, just like other braced flips.</p>
 
     <div class="card">
@@ -433,6 +435,8 @@ const SECTION_4 = {
     </p>
     `
 };
+
+// ---------------- 5. RELEASE & DISMOUNT RULES ----------------
 
 const SECTION_5 = {
   id: "release-dismount",
@@ -506,6 +510,8 @@ const SECTION_5 = {
   `
 };
 
+// ---------------- 6. APPEARANCE VIOLATIONS ----------------
+
 const SECTION_6 = {
   id: "appearance",
   navLabel: "Appearance Violations",
@@ -532,6 +538,14 @@ const SECTION_6 = {
           <img class="fade-edges" src="images/av_hairbows_rule.jpg" alt="Rule 1.1.5 text">
         </div>
     </div>
+    
+<br>
+
+    <div class="card" style="padding:.6rem;">
+      <img src="images/av_jewelry_panel.png" alt="Jewelry appearance violations — rule 2.1.1 guide with legal and illegal examples" style="border-radius:10px;width:100%;">
+    </div>
+
+<br>    
 
     <h3>Long Hair / Ponytails</h3>
     <div class="card">
@@ -548,6 +562,14 @@ const SECTION_6 = {
       <img class="fade-edges" src="images/av_longhair_situations2.jpg" alt="Rule 1.1.5 situations, part 2">
      </div>
     </div>
+
+<br>
+
+    <div class="card" style="padding:.6rem;">
+      <img src="images/av_shoes_panel.png" alt="Beads, ribbons, bands, and charms on shoes — legal and potentially illegal examples" style="border-radius:10px;">
+    </div>
+    
+<br>
 
     <h3>Long Nails</h3>
     <div class="card">
@@ -567,19 +589,15 @@ const SECTION_6 = {
       </div>
     </div>
 
-    <div class="card" style="padding:.6rem;">
-      <img src="images/av_jewelry_panel.png" alt="Jewelry appearance violations — rule 2.1.1 guide with legal and illegal examples" style="border-radius:10px;width:100%;">
-    </div>
-
-    <div class="card" style="padding:.6rem;">
-      <img src="images/av_shoes_panel.png" alt="Beads, ribbons, bands, and charms on shoes — legal and potentially illegal examples" style="border-radius:10px;">
-    </div>
+<br>
 
     <div class="card" style="padding:.6rem;">
       <img src="images/av_memorial_panel.png" alt="Memorial ribbons pinned to uniform — rule guide with examples" style="border-radius:10px;width:100%;">
     </div>
   `
 };
+
+// ---------------- 7. TIPS, RESOURCES & CONTACTS ----------------
 
 const SECTION_7 = {
   id: "tips-resources",
@@ -649,6 +667,8 @@ const SECTION_7 = {
     </div>
   `
 };
+
+// ---------------- !!!! KNOWLEDGE CHECK !!! ----------------
 
 const QUIZ_DATA = [
   {
@@ -1175,6 +1195,8 @@ const COMMISSIONER_EMAILS = {
   "Northern": "thenvcoa@gmail.com",
   "Northwest": "northwestcoa@gmail.com"
 };
+
+// ---------------- FINAL VERIFICATION ----------------
 
 const SECTION_9 = {
   id: "verify",
