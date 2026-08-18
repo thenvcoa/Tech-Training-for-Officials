@@ -59,6 +59,12 @@ const TRAINING_SECTIONS = [
       </ul>
     </div>
 
+    <figure class="frame" style="max-width:420px;margin:0 auto 1.2rem;">
+      <figcaption>2026 VHSL Technical Score Sheet</figcaption>      
+    <img src="images/slide02_img1.png" alt="2026 VHSL Competitive Cheer Technical Score Sheet">
+    </figure>
+
+    <br>
     <div class="card" style="text-align:center;">
       <span class="pill gold">HANDY REFERENCE</span>
       <h4 style="margin-top:.2rem;">VHSL Cheer Technical Official Cheat Sheet</h4>
@@ -69,14 +75,6 @@ const TRAINING_SECTIONS = [
         <a class="btn btn-secondary" style="text-decoration:none;display:inline-block;color:var(--navy);background:var(--bg);border:1.5px solid var(--line);" href="https://drive.google.com/file/d/1MZdvWdNuh2MO-lwx8wfS6eYAThRxuUZ-/view?usp=drive_link" target="_blank" rel="noopener">Open in Google Drive</a>
       </div>
     </div>
-
-    <figure class="frame" style="max-width:420px;margin:0 auto 1.2rem;">
-      <figcaption>2026 VHSL Technical Score Sheet</figcaption>      
-    <img src="images/slide02_img1.png" alt="2026 VHSL Competitive Cheer Technical Score Sheet">
-    </figure>
-
-    <br>
-    <h3>2026 Tech Cheat Sheet</h3>
     <div class="card tinted">
       <ul>
         <li>Most common deductions are at the top for quick reference.</li>
@@ -162,10 +160,7 @@ const TRAINING_SECTIONS = [
       </div>
     </div>
 
-    <h3>Illegal Choreo vs. Illegal Execution (cont.)</h3>
     <div class="card tinted">
-      <p><strong>Always ask:</strong> was the illegality intended &amp; choreographed that way?
-      Is it the whole team, or just one athlete?</p>
       <p>This training video discusses examples on the difference between illegal choreography
       and illegal execution.</p>
       <ul>
@@ -297,7 +292,7 @@ const SECTION_4 = {
         <li>Vertical releases from an extended position to an extended position may not perform more than a single twist.</li>
         <li>A top dismounting to a new group may perform a ¼ twist during the dismount.</li>
         <li>Non-release stunt catchers who are not original bases must not be involved with another skill when the transition is initiated.</li>
-        <li>New definitions added for <strong>"tumbling"</strong> and <strong>"Loading Position/Load."</strong></li>
+        <li>New definitions added for <strong>"Tumbling"</strong> and <strong>"Loading Position/Load."</strong></li>
       </ul>
     </div>
 
@@ -376,11 +371,11 @@ const SECTION_4 = {
     <div class="video-grid" style="justify-content:center;">
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s20_bracer_moving_legal_this_year_1.jpg" data-video-id="v10"><source src="videos/s20_bracer_moving_legal_this_year_1.mp4" type="video/mp4"></video></div>
-        <div class="video-label">¾ Back Layout to Prone <span class="watch-check" data-watch-for="v10"><span class="dot"></span>Not watched</span></div>
+        <div class="video-label">¾ Back Layout to Prone — Legal <span class="watch-check" data-watch-for="v10"><span class="dot"></span>Not watched</span></div>
       </div>
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s20_bracer_moving_legal_this_year_2.jpg" data-video-id="v11"><source src="videos/s20_bracer_moving_legal_this_year_2.mp4" type="video/mp4"></video></div>
-        <div class="video-label">1¼ Front Rotation to Prone <span class="watch-check" data-watch-for="v11"><span class="dot"></span>Not watched</span></div>
+        <div class="video-label">1¼ Front Rotation to Prone — Legal <span class="watch-check" data-watch-for="v11"><span class="dot"></span>Not watched</span></div>
       </div>
     </div>
 
@@ -477,11 +472,11 @@ const SECTION_5 = {
     <div class="video-grid" style="justify-content:center;">
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s30_release_tick_full_around.jpg" data-video-id="v18"><source src="videos/s30_release_tick_full_around.mp4" type="video/mp4"></video></div>
-        <div class="video-label">High-to-High Tick Full Around <span class="watch-check" data-watch-for="v18"><span class="dot"></span>Not watched</span></div>
+        <div class="video-label">High-to-High Tick Full Around — Legal <span class="watch-check" data-watch-for="v18"><span class="dot"></span>Not watched</span></div>
       </div>
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s30_release_tick_half_around.jpg" data-video-id="v19"><source src="videos/s30_release_tick_half_around.mp4" type="video/mp4"></video></div>
-        <div class="video-label">High-to-High Tick Half Around <span class="watch-check" data-watch-for="v19"><span class="dot"></span>Not watched</span></div>
+        <div class="video-label">High-to-High Tick Half Around — Legal <span class="watch-check" data-watch-for="v19"><span class="dot"></span>Not watched</span></div>
       </div>
     </div>
 
@@ -495,11 +490,11 @@ const SECTION_5 = {
     <div class="video-grid" style="justify-content:center;">
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s32_dismount_quarter_turn_prep.jpg" data-video-id="v20"><source src="videos/s32_dismount_quarter_turn_prep.mp4" type="video/mp4"></video></div>
-        <div class="video-label">Prep to New Bases, ¼ Turn <span class="watch-check" data-watch-for="v20"><span class="dot"></span>Not watched</span></div>
+        <div class="video-label">Prep to New Bases, ¼ Turn — Legal <span class="watch-check" data-watch-for="v20"><span class="dot"></span>Not watched</span></div>
       </div>
       <div class="video-card">
         <div class="video-wrap"><video controls preload="metadata" poster="posters/s32_dismount_pop_down_new_bases.jpg" data-video-id="v21"><source src="videos/s32_dismount_pop_down_new_bases.mp4" type="video/mp4"></video></div>
-        <div class="video-label">Pop-Down to New Bases <span class="watch-check" data-watch-for="v21"><span class="dot"></span>Not watched</span></div>
+        <div class="video-label">Pop-Down to New Bases — Legal <span class="watch-check" data-watch-for="v21"><span class="dot"></span>Not watched</span></div>
       </div>
     </div>
     <p style="color:var(--text-soft);font-size:.9rem;">Remember: if the visual starts from below shoulder level with bases under the feet, that's a
@@ -580,7 +575,7 @@ const SECTION_7 = {
         <li>Always refer coaches with lingering questions to their commissioner via email the day after the event.</li>
       </ol>
       <p><strong>Most importantly</strong> — don't be intimidated. We are all human and make
-      mistakes. We are all in this together!</p>
+      mistakes. If a correction or clarification needs to be distributed the commisioners will do so. We are all in this together!</p>
     <figure class="frame" style="max-width:300px;margin:0 auto;"><img src="images/slide38_img1.jpeg" alt="Team unity"></figure>
       </div>
 
@@ -592,7 +587,7 @@ const SECTION_7 = {
       <a href="https://usacheer.org/safety/rules" target="_blank" rel="noopener">usacheer.org/safety/rules</a></p>
       <p><strong>VHSL Cheer Resource Center</strong> — a Google Drive with numerous videos of
       stunts, pyramids, and legality rulings. If you need visual representations of the rubric
-      and/or rule changes, this is an excellent resource!</p>
+      and/or rule changes, this is an excellent resource!</p><br>
       <p><a href="https://sites.google.com/view/vhslcheercoachesresourcecenter/home" target="_blank" rel="noopener">sites.google.com/view/vhslcheercoachesresourcecenter/home</a></p>
       <figure class="frame" style="max-width:220px;margin:0 auto;"><img src="images/slide39_img1.png" alt="VHSL Cheer Resource Center QR code"></figure>
     </div>
