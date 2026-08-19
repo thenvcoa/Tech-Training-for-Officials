@@ -615,7 +615,7 @@ const SECTION_7 = {
         <tr><td>Southwest</td><td>Joan Frost</td><td><a href="mailto:admin@fabconva.com">admin@fabconva.com</a></td></tr>
         <tr><td>Central</td><td>Joi Delaney</td><td><a href="mailto:joidelaney@gmail.com">joidelaney@gmail.com</a></td></tr>
         <tr><td>Eastern</td><td>Lanita Hicks</td><td><a href="mailto:cheer4life78@gmail.com">cheer4life78@gmail.com</a></td></tr>
-        <tr><td>Harrisonburg</td><td>Carrie Hodges</td><td><a href="mailto:hcoacheer@gmail.com">hcoacheer@gmail.com</a></td></tr>
+        <tr><td>Harrisonburg</td><td>Carrie Hodges</td><td><a href="mailto:hcoacheer@gmail.com">carriechodges@gmail.com</a></td></tr>
         <tr><td>Northern</td><td>Lesley Farquharson</td><td><a href="mailto:thenvcoa@gmail.com">thenvcoa@gmail.com</a></td></tr>
         <tr><td>Northwest</td><td>Melissa Summerscales</td><td><a href="mailto:northwestcoa@gmail.com">northwestcoa@gmail.com</a></td></tr>
       </table>
